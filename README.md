@@ -12,6 +12,11 @@ Sommaire :
     2. [SASS](#sass)
     3. [Images](#images)
     4. [Fonts](#fonts)
+    5. [Loading Datas](#loading-datas)
+5. [Output Management](#output-management)
+    1. [Wrapping up](#wrapping-up)
+    2. [Preparation](#preparation)
+    3. [HtmlWebpackPlugin](#htmlwebpackplugin)
 
 ## Installation de WebPack 5
 
@@ -157,3 +162,50 @@ npm install --save-dev csv-loader xml-loader
 
 > ❗ Cependant il faut faire attention à la méthode d'importation du JSON, Node ne supporte nativement que la façon suivante `import data from './data.json'`. 
 > Il est impossible d'effectuer un import ciblé du style `import { foo } from './data.json'`
+
+## Output Management
+
+Documentation : [Output Management](https://webpack.js.org/guides/output-management/)
+
+Afin de traiter ce nouveau chapitre, nous allons faire un peu de ménage dans les fichiers ainsi que les dépendances.  
+
+### Wrapping up
+
+Suppressions de fichiers (csv, json, xml, svg, woff, ttf, css, sass) + suppressions des règles associées + màj du JS.
+
+```
+npm uninstall css-loader csv-loader sass sass-loader style-loader xml-loader
+```
+
+### Preparation
+
+Une fois que les fichiers sont supprimés, nous créons un fichier ./src/print.js dans lequel nous définissons une fonction
+qui sera utilisé à l'intérieur du fichier ./src/index.js.  
+Nous pourrons nous servir de cette fonction en réalisant un import dans le fichier ./src/index.js.  
+
+Ici, le guide invite à ajouter le script print.js à l'intérieur du HTML + ajouter un nouveau entryPoint dans le fichier de configuration.  
+L'app fonctionnant sans, j'ai donc commenté ces ajouts.  
+
+> ❗ Cependant, dans le cas de figure où nous pouvons avoir plusieurs points d'entrés, il est intéressant de souligner qu'il est possible de
+> gérer le nom des fichiers qui seront exportés dnas l'option "**output**" à l'aide des **substitutions** \[strings\]. 
+
+C'est maintenant que l'on commence à voir la problématique, si l'on modifie le nom de plusieurs points d'entrés, sachant qu'ils sont appelés en dur
+dans le fichier HTML, alors cela pourrait poser des problèmes d'oublis ce que l'on ne souhaite pas.  
+Pour résoudre ce problème nous allons chercher à exporter automatiquement le fichier HTML.
+
+### HtmlWebpackPlugin
+
+Documentation : [HtmlWebpackPlugin](https://github.com/jantimon/html-webpack-plugin)
+
+Comme à chaque fois, installation de la dépendance + modification du fichier de configuration.
+
+```
+npm install --save-dev html-webpack-plugin
+```
+
+Lors de l'exécution de la commande `npm run build` un fichier ./dist/index.html sera généré. Si un fichier portant ce nom est déjà
+présent dans le dossier alors celui-ci sera automatiquement écrasé !
+
+> 💡 Lors de la préparation de ce chapitre nous avons vidé à la main le dossier ./dist. Ce qui peut vite être problématique si l'on ne fait 
+> pas le ménage régulièrement dedans afin de ne garder uniquement les fichiers utiles.. ! Webpack permet de nettoyer ce dossier avant chaque build
+> grâce à un paramètre de l'option "**output**" `output.clean: true`.
