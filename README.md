@@ -62,3 +62,30 @@ Lien vers la documentation du [fichier de configuration](https://webpack.js.org/
 Dans le fichier de configuration ./package.json, nous pouvons y indiquer des commandes npm qui exécuteront des codes bien précis.  
 Par exemple, nous avons ajouté la commande "**build**" qui permet d'exécuter webpack, tout comme le faisait `npx webpack`.
 Nous pouvons alors exécuter la commande suivante : `npm run build` et constater que notre bundle a bien été de nouveau généré.  
+
+## Asset Management
+
+Documentation : [Asset Management](https://webpack.js.org/guides/asset-management/)
+
+Même si Webpack est orienté Javascript, il permet tout de même une prise en considération des autres types de fichiers (fonts, img, css).  
+Pour cela nous utiliserons des **loaders** ou des **built-in Asset Modules**.
+Ces loaders suivront la même logique que les fichiers JavaScript, c'est à dire qu'un graph de dépendances sera créé et ainsi uniquement 
+les ressources utilisées seront exportées dans le dossier ./dist. Ce qui permettra de garder des fichiers de productions optimisés.  
+
+### CSS
+
+Pour la prise en considération des fichiers CSS, nous allons devoir ajouter quelques packages (dépendances de développement).
+Mais aussi, ajouter des règles de gestion dans le fichier de configuration webpack ./webpack.config.js.
+
+```
+npm i --save-dev style-loader css-loader
+```
+
+Dans le fichier de configuration nous allons "chainé" les loaders "style-loader" et "css-loader".  
+Les chaînes s'exécute de manière inversé, ainsi le loader le plus bas dans la liste sera le premier exécuté.  
+Le second loader traitera le contenu rendu par le premier etc.  
+
+Nous avons donc créer un nouveau fichier css ./src/styles.css et nous l'avons importé dans notre fichier ./src/index.js.  
+Lorsque nous lançons la commande `npm run build` nous obtenons ainsi une balise <style> dans le head de notre HTML avec les styles
+définis dans le fichier css.  
+Cette balise <style> est générée dynamiquement en Javascript. 
