@@ -1,9 +1,9 @@
 # Découverte du guides Webpack 5
-## Tentative n°2 d'initialisation d'un starter de projet avec WebPack 5
+***Tentative n°2 d'initialisation d'un starter de projet avec WebPack 5***
 
 Documentation : [Webpack 5 Guides - Getting Started](https://webpack.js.org/guides/getting-started/)
 
-### Installation de WebPack 5
+## Installation de WebPack 5
 
 ```
 npm init -y
@@ -37,4 +37,22 @@ directement en JS.
 
 En indiquant à WebPack les dépendances utiles pour le bon fonctionnement de l'app, il sera alors en mesure, lors de la 
 création du bundle de production, de créer un graph de dépendances et d'insérer de manière optimisée l'ensemble des scripts
-nécessaire dans le bon ordre. 
+nécessaire dans le bon ordre.  
+
+Lançons le build à l'aide de la commande node package executable (npx).
+Cette fonction ne fonction qu'à partir de Node 8.2/npm 5.2.0.
+
+```
+npx webpack
+```
+
+Cela a pour effet de créer notre fichier ./dist/main.js.
+
+## Création du fichier de configuration pour paramétrer WebPack
+
+Création d'un fichier ./webpack.config.js.  
+Si nous éxecutons de nouveau la commande `npx webpack` cela ira chercher par défaut le fichier de configuration webpack.config.js.  
+Cependant, il est possible d'informer webpack quel fichier de configuration il va devoir exécuter, pour cela nous pouvons
+indiquer le nom du fichier à éxecuter en question `npx webpack --config webpack.config.js`.  
+
+Lien vers la documentation du [fichier de configuration](https://webpack.js.org/configuration).
