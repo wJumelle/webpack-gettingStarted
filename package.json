@@ -1,0 +1,20 @@
+{
+  "name": "webpack-guides",
+  "version": "1.0.0",
+  "description": "Documentation : [Webpack 5 Guides - Getting Started](https://webpack.js.org/guides/getting-started/)",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wJumelle/webpack-gettingStarted.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/wJumelle/webpack-gettingStarted/issues"
+  },
+  "homepage": "https://github.com/wJumelle/webpack-gettingStarted#readme"
+}
