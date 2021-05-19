@@ -3,6 +3,14 @@
 
 Documentation : [Webpack 5 Guides - Getting Started](https://webpack.js.org/guides/getting-started/)
 
+Sommaire : 
+1. [Installation de WebPack 5](#installation-de-webpack-5)
+2. [Fichier de configuration WebPack](#fichier-de-configuration-webpack)
+3. [Scripts npm](#scripts-npm)
+4. [Asset Management](#asset-management)
+    1. [CSS](#css)
+    2. [SASS](#sass)
+
 ## Installation de WebPack 5
 
 ```
@@ -48,7 +56,7 @@ npx webpack
 
 Cela a pour effet de créer notre fichier ./dist/main.js.
 
-## Création du fichier de configuration pour paramétrer WebPack
+## Fichier de configuration WebPack
 
 Création d'un fichier ./webpack.config.js.  
 Si nous éxecutons de nouveau la commande `npx webpack` cela ira chercher par défaut le fichier de configuration webpack.config.js.  
@@ -87,7 +95,7 @@ Les chaînes s'exécute de manière inversé, ainsi le loader le plus bas dans l
 Le second loader traitera le contenu rendu par le premier etc.  
 
 Nous avons donc créer un nouveau fichier css ./src/styles.css et nous l'avons importé dans notre fichier ./src/index.js.  
-Lorsque nous lançons la commande `npm run build` nous obtenons ainsi une balise <style> dans le head de notre HTML avec les styles
+Lorsque nous lançons la commande `npm run build` nous obtenons ainsi une balise \<style\> dans le head de notre HTML avec les styles
 définis dans le fichier css.  
 Cette balise <style> est générée dynamiquement en Javascript. 
 
@@ -106,5 +114,5 @@ Nous avons ici besoin du package comprenant **Dart Sass** et non du package cont
 Bien sûr, nous avons aussi besoin du loader Sass qui permettra d'interpréter les fichiers .scss.
 Si dans un projet, Dart Sass et Node Sass sont installé, il est possible d'informer Webpack de la préférence d'usage dans le fichier de configuration. 
 
-Si on run la commande `npm run build` nous pouvons voir que le JavaScript a donc créé une deuxième balise <style> dans lequel il y a inséré le SASS en minifié.  
+Si on run la commande `npm run build` nous pouvons voir que le JavaScript a donc créé une deuxième balise \<style\> dans lequel il y a inséré le SASS en minifié.  
 Les valeurs en SASS ont bien surchargée les valeurs des propriétés en CSS.  
