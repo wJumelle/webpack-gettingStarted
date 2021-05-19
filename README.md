@@ -116,3 +116,18 @@ Si dans un projet, Dart Sass et Node Sass sont installé, il est possible d'info
 
 Si on run la commande `npm run build` nous pouvons voir que le JavaScript a donc créé une deuxième balise \<style\> dans lequel il y a inséré le SASS en minifié.  
 Les valeurs en SASS ont bien surchargée les valeurs des propriétés en CSS.  
+
+### Images
+
+Comme dit plus haut, WebPack contient déjà tout un tas de built-in Asset Modules, notament un permettant de gérer le chargement des images.
+Pour l'utiliser il suffit de modifier le fichier de configuration de WebPack en créant une nouvelle règle et en lui spécifiant le type d'asset.
+Nous pouvons donc créer un nouveau dossier ./src/img contenant notre image test onepiece.svg.
+Maintenant, pour pouvoir utiliser cette image, il ne nous resete plus qu'à l'importer dans le fichier ./src/index.js. `import onePieceLogo from './img/onePiece_2.svg';`.
+
+Le comportement est le suivant : 
+1. en JS, lors de l'import l'image va être traité (processed) et ajouté à notre dossier ./dist. La variable onePieceLogo contient donc l'URL finale vers l'image.
+2. en CSS / SASS, le loader 'css-loader' va suivre un raisonnement similaire, il va reconnaître l'image comme une image locale et donc remplacé le chemin par le chemin final
+décrit dans l'output du fichier de configuration.
+3. en HTML, le loader 'html-loader' fonctionne exactement pareil. La balise image ressemblerait à `<img src="./onePiece_2.svg" />`.
+
+❗ Pour le CSS comme pour le HTML comme ce sont des loaders qui analysent l'image, il n'y a pas besoin d'importer l'image dans le fichier ./src/index.js.
