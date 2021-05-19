@@ -17,6 +17,9 @@ Sommaire :
     1. [Wrapping up](#wrapping-up)
     2. [Preparation](#preparation)
     3. [HtmlWebpackPlugin](#htmlwebpackplugin)
+6. [Development](#development)
+    1. [Sources maps](#source-maps)
+    2. [Choisir un outil de développement](#choisir-un-outil-de-developpement)
 
 ## Installation de WebPack 5
 
@@ -165,6 +168,8 @@ npm install --save-dev csv-loader xml-loader
 
 ## Output Management
 
+Cette partie du guide étend la branche main.
+
 Documentation : [Output Management](https://webpack.js.org/guides/output-management/)
 
 Afin de traiter ce nouveau chapitre, nous allons faire un peu de ménage dans les fichiers ainsi que les dépendances.  
@@ -209,3 +214,59 @@ présent dans le dossier alors celui-ci sera automatiquement écrasé !
 > 💡 Lors de la préparation de ce chapitre nous avons vidé à la main le dossier ./dist. Ce qui peut vite être problématique si l'on ne fait 
 > pas le ménage régulièrement dedans afin de ne garder uniquement les fichiers utiles.. ! Webpack permet de nettoyer ce dossier avant chaque build
 > grâce à un paramètre de l'option "**output**" `output.clean: true`.
+
+## Development
+
+Cette partie du guide étend la branche outputManagement.
+
+Documentation : [Development](https://webpack.js.org/guides/development/)
+
+> 💡 Ce qui va suivre est uniquement pour la phase de développement, en aucun cas il faudra se servir des outils qui vont suivre
+> en phase de production.
+
+### Source maps
+
+Documentation : [Source maps](https://webpack.js.org/configuration/devtool/)
+
+L'un des défault des bundlers c'est l'empaquetage des fichiers. Nous pouvons partir de plusieurs fichiers (a/b/c.js) différents pour au final
+n'en avoir plus qu'un seul, ici admettons bundle.js.  
+Imaginons que le fichier b.js comporte une erreur, alors le tracking d'erreur pointera vers le fichier bundle.js et non vers b.js. 
+
+Pour rendre le débuggage plus simple, JavaScript permet l'usage des source maps qui permettra de relier le code compilé aux fichiers d'origines.  
+Ainsi, si une erreur ressort sur le fichier bundle.js et dont l'origine est b.js alors le source maps indiquera le fichier b.js. 
+
+Il y a tout un tas d'option possible, qui sont accessibles dans la documentation ci-dessus. 
+Ici nous utiliserons l'option `devtool: inline-source-map` que nous allons indiquer dans le fichier de configuration webpack.
+Il permettra d'indiquer dans la console, le fichier ainsi que la ligne d'erreur.
+
+### Choisir un outil de développement
+
+Il existe différentes options afin de simplifier la vie lors de la phase de développement. 
+En effet, cela peu sembler ennuyant d'avoir à build l'intégralité de l'app à chaque modification. 
+
+1. [Le mode watch de webpack](#le-mode-watch-de-webpack)
+2. [Le package webpack-dev-server](#le-package-webpack-dev-server)
+3. [Le package webpack-dev-middleware](#le-package-webpack-dev-middleware)
+
+Dans la plus part des cas nous utiliserons l'option webpack-dev-server.
+
+#### Le mode watch de webpack
+
+Vous pouvez demander à Webpack d'observer les fichiers concernés par le graphique des dépendances (dependency graph). Ainsi, lorsque l'un de ses
+fichiers sera mis à jours Webpack ira chercher cette mise à jours mais ne rafraîchira pas l'ensemble des fichiers.  
+
+Pour cela, il faut mettre en place un nouveau script dans le fichier ./package.json `"watch": "webpack --watch"`.
+
+Lorsque Webpack est en train d'observer votre dependency graph les commandes ne sont plus disponible sur le terminal en cours, car une action  
+est toujours en cours. Pour quitter le processus il suffit de faire un Ctrl+C. Et de choisir l'option "O".
+
+Si l'on exécute la commande `npm run watch` et que l'on tente d'utiliser le bouton. L'erreur précédemment ajouter au fichier ./src/print.js
+se produit. Si l'on résout l'erreur, sauvegarde le fichier et que nous rafraîchissons le navigateur, nous pouvons observer que l'erreur 
+a disparu. 
+
+Cependant, cela peut paraître un peu embêtant de toujours devoir rafraîchir son navigateur...
+
+
+#### Le package webpack-dev-server
+
+#### Le package webpack-dev-middleware

@@ -4,6 +4,7 @@
   "description": "Starter project with Webpack 5",
   "private": true,
   "scripts": {
+    "watch": "webpack --watch",
     "build": "webpack"
   },
   "repository": {
