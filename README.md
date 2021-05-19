@@ -56,3 +56,9 @@ Cependant, il est possible d'informer webpack quel fichier de configuration il v
 indiquer le nom du fichier à éxecuter en question `npx webpack --config webpack.config.js`.  
 
 Lien vers la documentation du [fichier de configuration](https://webpack.js.org/configuration).
+
+## Scripts npm
+
+Dans le fichier de configuration ./package.json, nous pouvons y indiquer des commandes npm qui exécuteront des codes bien précis.  
+Par exemple, nous avons ajouté la commande "**build**" qui permet d'exécuter webpack, tout comme le faisait `npx webpack`.
+Nous pouvons alors exécuter la commande suivante : `npm run build` et constater que notre bundle a bien été de nouveau généré.  
