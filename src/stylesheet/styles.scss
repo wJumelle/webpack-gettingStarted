@@ -1,4 +1,5 @@
 @use './abstract' as *;
+@use './base';
 
 html {
     font-size: $fs;
@@ -7,8 +8,14 @@ html {
     background: url('../img/bkg_degrade.jpg') repeat-x;
 }
 
+body {
+    text-align: center;
+}
+
 h1 {
+    font-size: 5rem;
     color: $clr-primary;
+    font-family: $ff-title;
 }
 
 h2 {

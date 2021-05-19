@@ -10,6 +10,8 @@ Sommaire :
 4. [Asset Management](#asset-management)
     1. [CSS](#css)
     2. [SASS](#sass)
+    3. [Images](#images)
+    4. [Fonts](#fonts)
 
 ## Installation de WebPack 5
 
@@ -131,3 +133,14 @@ décrit dans l'output du fichier de configuration.
 3. en HTML, le loader 'html-loader' fonctionne exactement pareil. La balise image ressemblerait à `<img src="./onePiece_2.svg" />`.
 
 ❗ Pour le CSS comme pour le HTML comme ce sont des loaders qui analysent l'image, il n'y a pas besoin d'importer l'image dans le fichier ./src/index.js.
+
+### Fonts
+
+Les built-in Assets modules peuvent prendre en considération énormément de type de fichier différents, les fonts de caractères en font aussi parti.  
+Pour cela, il suffit juste tout simplement d'adapter la regex du test aux extensions des fonts, comme ceci `test: /\.(woff|woff2|eot|ttf|otf)$/i,`.
+
+Il ne reste plus qu'à insérer la font dans le fichier fonts.scss et le tour est joué !  
+L'URL de la typo sera résolue exactement de la même façon que l'URL des images par l'Asset Management.  
+
+❗ Pour les fichiers Sass, veillez à faire attention aux URLs relative, le point de départ de l'URL relative étant le niveau où se situe le fichier .scss qui
+charge tous les autres. Cela vaut aussi pour les images.  

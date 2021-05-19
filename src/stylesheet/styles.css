@@ -2,12 +2,22 @@
     box-sizing: border-box;
 }
 
+@font-face {
+    font-family: 'Shelter';
+    src: url('../fonts/shelter.ttf') format('ttf'),
+         url('../fonts/shelter.woff') format('woff');
+    font-weight: 600;
+    font-style: normal;
+}
+
 html {
     font-size: 16px;
+    font-family: 'Shelter', sans-serif;
+    background: url('../img/bkg_degrade.jpg') repeat-x;
 }
 
 h1 {
-    font-size: 2em;
+    font-size: 5rem;
     color: pink;
 }
 
