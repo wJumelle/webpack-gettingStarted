@@ -8,13 +8,13 @@ html {
 
 h1 {
     font-size: 2em;
-    color: red;
+    color: pink;
 }
 
 h2 {
-    color: blue;
+    color: yellow;
 }
 
 .hello {
-    color: green;
+    color: orangered;
 }

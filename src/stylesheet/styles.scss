@@ -1,0 +1,15 @@
+@use './abstract' as *;
+
+html {
+    font-size: $fs;
+    font-family: $ff;
+    color: $clr-tertiary;
+}
+
+h1 {
+    color: $clr-primary;
+}
+
+h2 {
+    color: $clr-secondary;
+}

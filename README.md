@@ -76,6 +76,7 @@ les ressources utilisées seront exportées dans le dossier ./dist. Ce qui perme
 
 Pour la prise en considération des fichiers CSS, nous allons devoir ajouter quelques packages (dépendances de développement).
 Mais aussi, ajouter des règles de gestion dans le fichier de configuration webpack ./webpack.config.js.
+Encore une fois ici la ligne se lit à l'envers, ainsi nous ajoutons d'abord "css-loader" puis "style-loader".  
 
 ```
 npm i --save-dev style-loader css-loader
@@ -89,3 +90,21 @@ Nous avons donc créer un nouveau fichier css ./src/styles.css et nous l'avons i
 Lorsque nous lançons la commande `npm run build` nous obtenons ainsi une balise <style> dans le head de notre HTML avec les styles
 définis dans le fichier css.  
 Cette balise <style> est générée dynamiquement en Javascript. 
+
+### SASS
+
+Pour la prise en considération des fichiers SASS nous avons modifié légèrement l'arborescence du dossier ./src, en y ajoutant le dossier
+./src/stylesheet/.  
+Puis nous avons créé une arborescence de dossier pour l'exploitation optimisée de SASS (architecture 7-1).
+Enfin nous avons ajouté les packages.
+
+``` 
+npm i --save-dev sass-loader sass
+``` 
+
+Nous avons ici besoin du package comprenant **Dart Sass** et non du package contenant **Node Sass**. Ce dernier ne supportant pas encore @use.
+Bien sûr, nous avons aussi besoin du loader Sass qui permettra d'interpréter les fichiers .scss.
+Si dans un projet, Dart Sass et Node Sass sont installé, il est possible d'informer Webpack de la préférence d'usage dans le fichier de configuration. 
+
+Si on run la commande `npm run build` nous pouvons voir que le JavaScript a donc créé une deuxième balise <style> dans lequel il y a inséré le SASS en minifié.  
+Les valeurs en SASS ont bien surchargée les valeurs des propriétés en CSS.  
