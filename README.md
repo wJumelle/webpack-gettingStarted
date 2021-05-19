@@ -132,7 +132,7 @@ Le comportement est le suivant :
 décrit dans l'output du fichier de configuration.
 3. en HTML, le loader 'html-loader' fonctionne exactement pareil. La balise image ressemblerait à `<img src="./onePiece_2.svg" />`.
 
-❗ Pour le CSS comme pour le HTML comme ce sont des loaders qui analysent l'image, il n'y a pas besoin d'importer l'image dans le fichier ./src/index.js.
+> ❗ Pour le CSS comme pour le HTML comme ce sont des loaders qui analysent l'image, il n'y a pas besoin d'importer l'image dans le fichier ./src/index.js.
 
 ### Fonts
 
@@ -142,5 +142,18 @@ Pour cela, il suffit juste tout simplement d'adapter la regex du test aux extens
 Il ne reste plus qu'à insérer la font dans le fichier fonts.scss et le tour est joué !  
 L'URL de la typo sera résolue exactement de la même façon que l'URL des images par l'Asset Management.  
 
-❗ Pour les fichiers Sass, veillez à faire attention aux URLs relative, le point de départ de l'URL relative étant le niveau où se situe le fichier .scss qui
+> ❗ Pour les fichiers Sass, veillez à faire attention aux URLs relative, le point de départ de l'URL relative étant le niveau où se situe le fichier .scss qui
 charge tous les autres. Cela vaut aussi pour les images.  
+
+### Loading datas
+
+Les fichiers JSON sont supportés nativement par Node, il n'y aura donc aucun package ni traitement particulier à effectuer pour les fichiers JSON.  
+Cependant, pour les fichiers comment .XML ou .CSV/.TSV, il faudra installer des packages et donc créer de nouvelles règles de configuration.  
+Les fichiers seront donc parcourru par les loaders qui renverront du JSON. 
+
+```
+npm install --save-dev csv-loader xml-loader
+```
+
+> ❗ Cependant il faut faire attention à la méthode d'importation du JSON, Node ne supporte nativement que la façon suivante `import data from './data.json'`. 
+> Il est impossible d'effectuer un import ciblé du style `import { foo } from './data.json'`
