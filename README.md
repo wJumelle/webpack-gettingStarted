@@ -17,6 +17,10 @@ Sommaire :
     1. [Wrapping up](#wrapping-up)
     2. [Preparation](#preparation)
     3. [HtmlWebpackPlugin](#htmlwebpackplugin)
+6. [Development](#development)
+    1. [Sources maps](#source-maps)
+    2. [Choisir un outil de développement](#choisir-un-outil-de-developpement)
+7. [Code Splitting](#code-splitting)
 
 ## Installation de WebPack 5
 
@@ -165,6 +169,8 @@ npm install --save-dev csv-loader xml-loader
 
 ## Output Management
 
+Cette partie du guide étend la branche main.
+
 Documentation : [Output Management](https://webpack.js.org/guides/output-management/)
 
 Afin de traiter ce nouveau chapitre, nous allons faire un peu de ménage dans les fichiers ainsi que les dépendances.  
@@ -209,3 +215,132 @@ présent dans le dossier alors celui-ci sera automatiquement écrasé !
 > 💡 Lors de la préparation de ce chapitre nous avons vidé à la main le dossier ./dist. Ce qui peut vite être problématique si l'on ne fait 
 > pas le ménage régulièrement dedans afin de ne garder uniquement les fichiers utiles.. ! Webpack permet de nettoyer ce dossier avant chaque build
 > grâce à un paramètre de l'option "**output**" `output.clean: true`.
+
+## Development
+
+Cette partie du guide étend la branche outputManagement.
+
+Documentation : [Development](https://webpack.js.org/guides/development/)
+
+> 💡 Ce qui va suivre est uniquement pour la phase de développement, en aucun cas il faudra se servir des outils qui vont suivre
+> en phase de production.
+
+### Source maps
+
+Documentation : [Source maps](https://webpack.js.org/configuration/devtool/)
+
+L'un des défault des bundlers c'est l'empaquetage des fichiers. Nous pouvons partir de plusieurs fichiers (a/b/c.js) différents pour au final
+n'en avoir plus qu'un seul, ici admettons bundle.js.  
+Imaginons que le fichier b.js comporte une erreur, alors le tracking d'erreur pointera vers le fichier bundle.js et non vers b.js. 
+
+Pour rendre le débuggage plus simple, JavaScript permet l'usage des source maps qui permettra de relier le code compilé aux fichiers d'origines.  
+Ainsi, si une erreur ressort sur le fichier bundle.js et dont l'origine est b.js alors le source maps indiquera le fichier b.js. 
+
+Il y a tout un tas d'option possible, qui sont accessibles dans la documentation ci-dessus. 
+Ici nous utiliserons l'option `devtool: inline-source-map` que nous allons indiquer dans le fichier de configuration webpack.
+Il permettra d'indiquer dans la console, le fichier ainsi que la ligne d'erreur.
+
+### Choisir un outil de développement
+
+Il existe différentes options afin de simplifier la vie lors de la phase de développement. 
+En effet, cela peu sembler ennuyant d'avoir à build l'intégralité de l'app à chaque modification. 
+
+1. [Le mode watch de webpack](#le-mode-watch-de-webpack)
+2. [Le package webpack-dev-server](#le-package-webpack-dev-server)
+3. [Le package webpack-dev-middleware](#le-package-webpack-dev-middleware)
+
+Dans la plus part des cas nous utiliserons l'option webpack-dev-server.
+
+#### Le mode watch de webpack
+
+Vous pouvez demander à Webpack d'observer les fichiers concernés par le graphique des dépendances (dependency graph). Ainsi, lorsque l'un de ses
+fichiers sera mis à jours Webpack ira chercher cette mise à jours mais ne rafraîchira pas l'ensemble des fichiers.  
+
+Pour cela, il faut mettre en place un nouveau script dans le fichier ./package.json `"watch": "webpack --watch"`.
+
+Lorsque Webpack est en train d'observer votre dependency graph les commandes ne sont plus disponible sur le terminal en cours, car une action  
+est toujours en cours. Pour quitter le processus il suffit de faire un Ctrl+C. Et de choisir l'option "O".
+
+Si l'on exécute la commande `npm run watch` et que l'on tente d'utiliser le bouton. L'erreur précédemment ajouter au fichier ./src/print.js
+se produit. Si l'on résout l'erreur, sauvegarde le fichier et que nous rafraîchissons le navigateur, nous pouvons observer que l'erreur 
+a disparu. 
+
+Cependant, cela peut paraître un peu embêtant de toujours devoir rafraîchir son navigateur...
+
+#### Le package webpack-dev-server
+
+Le package webpack-dev-server fournit un serveur web simple dont l'une des fonctionnalité principale est le **live reloading**. 
+
+```
+npm install --save-dev webpack-dev-server
+```
+
+Pour le bon fonctionnement de ce nouveau package nous devons modifier le fichier ./webpack.config.js afin de lui ajouter des informations autour du serveur afin que webpack aille bien chercher les fichiers contenus dans le dossier ./dist lors de l'exécution du package.
+
+```
+devServer: {
+    contentBase: './dist'
+}
+```
+
+Ajout d'un nouveau script dans ./package.json : `"start": "webpack serve --open"` avec l'option "**--open**" qui indique la volonté d'ouvrir un nouvel onglet lors de l'exécution du script. 
+
+> Le package webpack-dev-server ne produit aucun fichier, il ne se sert que des fichiers compilés qu'il garde en mémoire et affiche pour émuler l'app. 
+
+> webpack-dev-serv se sert de la variable "**output.path**" afin de monter l'url des fichiers. Il suit la règle suivante : `http://[devServer.host]:[devServer.port]/[output.publicPath]/[output.filename]`.
+
+Ici nous ne voyons qu'une infime parti des options qu'offrent le package. 
+Pour plus d'informations, [documentation webpack-dev-server](https://webpack.js.org/configuration/dev-server)
+
+#### Le package webpack-dev-middleware
+
+```
+npm install --save-dev express webpack-dev-middleware
+```
+
+Le package webpack-dev-middleware est un wrapper qui émettra les fichiers compilés à un serveur.  
+Cette fonctionnalité est déjà utilisée de manière interne dans webpack-dev-server, mais est rendu accessible à des packages externes grâce à webpack-dev-middleware.  
+
+Pour l'exemple, nous aurons donc besoin du package webpack-dev-middleware et d'un serveur express.  
+
+Pour le bon fonctionnement des packages, nous allons devoir renseigner plusieurs fichiers.  
+1. le fichier ./webpack.config.js en y ajoutant la propriété `output.publicPath: '\'`
+2. le fichier ./server.js avec toutes les options permettant au serveur de démarrer 
+3. le fichier ./package.json afin de créer le nouveau script `"server": "node server.js"`
+
+Ici à l'exécution, comme nous passons par un module de serveur externe à webpack nous devrons ouvrir de nous même un onglet du navigateur et attaquer le port :3000.
+
+Documentation : [Hot Module Replacement](https://webpack.js.org/guides/hot-module-replacement/)
+
+## Code splitting
+
+Documentation : [code splitting](https://webpack.js.org/guides/code-splitting/)
+
+Cette partie du cours reprends la branche "Output Management".
+
+Le **code splitting** est l'une des fonctionnalité les plus intéressantes de WebPack. Elle permet 
+de diviser votre code en un nombre infini de briques / paquets différents qui peuvent être chargé à 
+la demande ou en parallèle des autres paquets.  
+
+Ce qui peut donc être utilisé pour optimiser un projet en séparant les briques autonomes (création 
+de bundles plus petits, contrôle du chargement des ressources => optimisation du temps de chargement).  
+
+Il y a trois approches différentes autour du "code splitting" : 
+1. [**les points d'entrées (entry points)**](#entry-point) qui sépare le code manuellement en déclarant des entrées (entry)
+2. [**Prevent duplication**](#prevent-duplication) qui utilise les [Entry dependencies](https://webpack.js.org/configuration/entry-context/#dependencies) ou le [SplitChunksPlugin](https://webpack.js.org/plugins/split-chunks-plugin/) qui permettent de dédoublonner et diviser les gros morceaux de codes (chunks).
+3. **Dynamic imports** qui divise le code à l'aide des imports à l'aides d'inline functions appelées dans les modules.
+
+#### Entry Points
+
+C'est la façon la plus facile et la plus intuitive de pratique le code splitting. 
+Cependant, c'est aussi la façon la moins autonomes et demandant donc de la configuration manuelle.  
+Elle possède aussi de nombreux pièges que nous allons voir. 
+
+Créons le fichier ./src/another-module.js dans lequel nous allons utiliser lodash pour logger un texte dans la console, puis définissons notre nouveau point d'entrée dans le fichier ./webpack.config.js.
+
+Buildons le bundle à l'aide de la commande `npm run build`.
+
+> ❗ Si nous observons le code obtenus pour les 2 fichiers ./dist/index.bundle.js et ./dist/another-module.js nous pouvons constater le chargement de lodash dans les deux modules. 
+> Ceci représente l'un des pièges de l'utilisation des entry points.
+
+#### Prevent duplication
