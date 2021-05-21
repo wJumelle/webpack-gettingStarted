@@ -12,6 +12,7 @@ Sommaire :
     2. [SASS](#sass)
     3. [Images](#images)
     4. [Fonts](#fonts)
+<<<<<<< HEAD
     5. [Loading Datas](#loading-datas)
 5. [Output Management](#output-management)
     1. [Wrapping up](#wrapping-up)
@@ -20,6 +21,8 @@ Sommaire :
 6. [Development](#development)
     1. [Sources maps](#source-maps)
     2. [Choisir un outil de développement](#choisir-un-outil-de-developpement)
+=======
+>>>>>>> parent of 604ff66 (Output Management - HtmlWebpackPlugin)
 
 ## Installation de WebPack 5
 
@@ -164,6 +167,7 @@ npm install --save-dev csv-loader xml-loader
 ```
 
 > ❗ Cependant il faut faire attention à la méthode d'importation du JSON, Node ne supporte nativement que la façon suivante `import data from './data.json'`. 
+<<<<<<< HEAD
 > Il est impossible d'effectuer un import ciblé du style `import { foo } from './data.json'`
 
 ## Output Management
@@ -270,3 +274,6 @@ Cependant, cela peut paraître un peu embêtant de toujours devoir rafraîchir s
 #### Le package webpack-dev-server
 
 #### Le package webpack-dev-middleware
+=======
+> Il est impossible d'effectuer un import ciblé du style `import { foo } from './data.json'`
+>>>>>>> parent of 604ff66 (Output Management - HtmlWebpackPlugin)
