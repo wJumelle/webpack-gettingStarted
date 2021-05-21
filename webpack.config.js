@@ -1,22 +1,8 @@
 const path = require('path');
 
 module.exports = {
-<<<<<<< HEAD
-    mode: 'development',
-    entry: { 
-        index: './src/index.js',
-        print: './src/print.js'
-    },
-    devtool: 'inline-source-map',
-    plugins: [
-      new HtmlWebpackPlugin({
-        title: 'Development',
-      }),
-    ],
-=======
     mode: 'production',
     entry: './src/index.js',
->>>>>>> parent of 604ff66 (Output Management - HtmlWebpackPlugin)
     output: {
         filename: 'bundle.js',
         path: path.resolve(__dirname, 'dist'),
