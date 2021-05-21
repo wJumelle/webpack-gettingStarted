@@ -266,7 +266,29 @@ a disparu.
 
 Cependant, cela peut paraître un peu embêtant de toujours devoir rafraîchir son navigateur...
 
-
 #### Le package webpack-dev-server
+
+Le package webpack-dev-server fournit un serveur web simple dont l'une des fonctionnalité principale est le **live reloading**. 
+
+```
+npm install --save-dev webpack-dev-server
+```
+
+Pour le bon fonctionnement de ce nouveau package nous devons modifier le fichier ./webpack.config.js afin de lui ajouter des informations autour du serveur afin que webpack aille bien chercher les fichiers contenus dans le dossier ./dist lors de l'exécution du package.
+
+```
+devServer: {
+    contentBase: './dist'
+}
+```
+
+Ajout d'un nouveau script dans ./package.json : `"start": "webpack serve --open"` avec l'option "**--open**" qui indique la volonté d'ouvrir un nouvel onglet lors de l'exécution du script. 
+
+> Le package webpack-dev-server ne produit aucun fichier, il ne se sert que des fichiers compilés qu'il garde en mémoire et affiche pour émuler l'app. 
+
+> webpack-dev-serv se sert de la variable "**output.path**" afin de monter l'url des fichiers. Il suit la règle suivante : `http://[devServer.host]:[devServer.port]/[output.publicPath]/[output.filename]`.
+
+Ici nous ne voyons qu'une infime parti des options qu'offrent le package. 
+Pour plus d'informations, [documentation webpack-dev-server](https://webpack.js.org/configuration/dev-server)
 
 #### Le package webpack-dev-middleware
