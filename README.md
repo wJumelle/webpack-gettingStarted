@@ -269,4 +269,37 @@ Cependant, cela peut paraître un peu embêtant de toujours devoir rafraîchir s
 
 #### Le package webpack-dev-server
 
+```
+npm i --save-dev webpack-dev-server
+```
+
+Une fois l'installation réussi, il nous faut configurer webpack afin de l'informer du dossier qu'il devra observer sur le **localhost:8080**. Pour cela on ajoute les lignes suivantes au fichier ./webpack.config.js.
+
+```
+devServer: {
+    contentBase: './dist/'
+}
+```
+
+> Lors de la conception de l'URL par webpack-dev-server, webpack va suivre une règle strict, que vous pouvez modifer via le fichier de configuration : http://\[devServer.host]:\[devServer.port]/\[output.publicPath]/\[output.filename]  
+
+> ❗ webpack-dev-server ne créé pas de fichier dans le dossier ./dist. webpack-dev-server va simplement compiler les fichiers ensemble et les gardes en mémoires afin d'émuler l'affichage de l'app.  
+
+Il ne nous reste maintenant plus qu'à configurer un script npm afin d'exécuter plus simplement le package : `npm run start` appelera le script `"start": "webpack serve --open"` avec l'option "**--open**" permettant d'ouvrir un nouvel onglet à l'exécution de la commande.  
+
+La fonctionnalité `webpack serve` vient avec tout un tas de configuration possible. 
+Documentation : [webpack serve](https://webpack.js.org/configuration/dev-server)
+
 #### Le package webpack-dev-middleware
+
+Ici nous allons nous intéresser au **Hot Module Replacement** via les dépendances webpack-dev-middleware et express. 
+
+```
+npm i --save-dev express webpack-dev-middleware
+```
+
+Nous devons alors spécifier notre **publicPath** dans le fichier ./webpack.config.js car cette
+variable sera nécessaire pour le bon fonctionnement du serveur express.  
+Pour le bon fonctionnement de ce serveur nous allons aussi créer un fichier ./server.js que l'on exécutera avec la commande `npm run server`.  
+
+Documentation : [HMR](https://webpack.js.org/guides/hot-module-replacement/)
