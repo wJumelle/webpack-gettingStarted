@@ -292,3 +292,21 @@ Ici nous ne voyons qu'une infime parti des options qu'offrent le package.
 Pour plus d'informations, [documentation webpack-dev-server](https://webpack.js.org/configuration/dev-server)
 
 #### Le package webpack-dev-middleware
+
+```
+npm install --save-dev express webpack-dev-middleware
+```
+
+Le package webpack-dev-middleware est un wrapper qui émettra les fichiers compilés à un serveur.  
+Cette fonctionnalité est déjà utilisée de manière interne dans webpack-dev-server, mais est rendu accessible à des packages externes grâce à webpack-dev-middleware.  
+
+Pour l'exemple, nous aurons donc besoin du package webpack-dev-middleware et d'un serveur express.  
+
+Pour le bon fonctionnement des packages, nous allons devoir renseigner plusieurs fichiers.  
+1. le fichier ./webpack.config.js en y ajoutant la propriété `output.publicPath: '\'`
+2. le fichier ./server.js avec toutes les options permettant au serveur de démarrer 
+3. le fichier ./package.json afin de créer le nouveau script `"server": "node server.js"`
+
+Ici à l'exécution, comme nous passons par un module de serveur externe à webpack nous devrons ouvrir de nous même un onglet du navigateur et attaquer le port :3000.
+
+Documentation : [Hot Module Replacement](https://webpack.js.org/guides/hot-module-replacement/)
