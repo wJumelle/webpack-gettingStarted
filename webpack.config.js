@@ -5,11 +5,10 @@ module.exports = {
     mode: 'production',
     entry: { 
         index: './src/index.js',
-        //print: './src/print.js'
     },
     plugins: [
       new HtmlWebpackPlugin({
-        title: 'Output Management',
+        title: 'Code Splitting',
       }),
     ],
     output: {
