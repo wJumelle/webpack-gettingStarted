@@ -375,8 +375,8 @@ optimization: {
 
 Cette modification a pour effet de créer deux nouveaux fichiers lors du build ./dist/runtime.bundle.js et ./dist/shared.bundle.js. 
 
-Même si il est possible d'utiliser plusieurs points d'entrées pour une même page, il est cependant déconseillé de le faire. 
-Il est préférable de réaliser plusieur imports dans un même point d'entrée. 
+> 💡 Même si il est possible d'utiliser plusieurs points d'entrées pour une même page, il est cependant déconseillé de le faire. 
+> Il est préférable de réaliser plusieur imports dans un même point d'entrée. 
 
 ```
 entry: {
@@ -385,4 +385,15 @@ entry: {
 ```
 
 ##### SplitChunksPlugin
+
+Documentation : [SplitChunksPlugin](https://webpack.js.org/plugins/split-chunks-plugin/)
+
+Ce plugin nous permet d'identifier les dépendances communes et de les exporter dans des scripts différents, soit à l'intérieur d'un point d'entrée déjà existant soit dans un morceau de code à part entière. 
+
+Faisons marche arrière et revenons avec deux points d'entrées différents.  
+Puis ajoutons l'option `optimization: { splitChunksPlugin: { chunks: 'all' } }` au fichier ./webpack.config.js.  
+
+Lors du build nous allons avoir la génération de 3 fichiers JS différents : ./dist/index.bundle.js, ./dist/another.bundle.js et le fichier JS contenant lodash.
+
+Il existe d'autres loaders permettant de gérer la séparation du code, [mini-css-extract-plugin](https://webpack.js.org/plugins/mini-css-extract-plugin) pour le CSS par exemple.
 
