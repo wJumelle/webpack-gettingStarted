@@ -344,3 +344,45 @@ Buildons le bundle à l'aide de la commande `npm run build`.
 > Ceci représente l'un des pièges de l'utilisation des entry points.
 
 #### Prevent duplication
+
+##### Entry dependencies
+
+Pour éviter cela il existe une option dans webpack qui s'appelle "**dependOn**" qui permet de partager certains module entre plusieurs points d'entrées.  
+
+Documentation : [dependOn](https://webpack.js.org/configuration/entry-context/#dependencies)
+
+```
+entry {
+    index: {
+        import: './src/index.js',
+        dependOn: 'shared'
+    },
+    another: {
+        import: './src/another-module.js',
+        dependOn: 'shared'
+    },
+    shared: 'lodash'
+}
+```
+
+Lorsque plusieurs point d'entrées sont utilisées dans une même page, il est nécessaire d'ajouter une deuxième option au fichier ./webpack.config.js afin d'éviter les [erreurs](https://bundlers.tooling.report/code-splitting/multi-entry/) : 
+
+```
+optimization: {
+    runtimeChunk: 'single'
+}
+```
+
+Cette modification a pour effet de créer deux nouveaux fichiers lors du build ./dist/runtime.bundle.js et ./dist/shared.bundle.js. 
+
+Même si il est possible d'utiliser plusieurs points d'entrées pour une même page, il est cependant déconseillé de le faire. 
+Il est préférable de réaliser plusieur imports dans un même point d'entrée. 
+
+```
+entry: {
+    page: ['./src/index.js', './src/another-module.js']
+}
+```
+
+##### SplitChunksPlugin
+
