@@ -1,11 +1,11 @@
-# Découverte du guides Webpack 5
-***Tentative n°2 d'initialisation d'un starter de projet avec WebPack 5***
+# Découverte du guides webpack 5
+***Tentative n°2 d'initialisation d'un starter de projet avec webpack 5***
 
-Documentation : [Webpack 5 Guides - Getting Started](https://webpack.js.org/guides/getting-started/)
+Documentation : [webpack 5 Guides - Getting Started](https://webpack.js.org/guides/getting-started/)
 
 Sommaire : 
-1. [Installation de WebPack 5](#installation-de-webpack-5)
-2. [Fichier de configuration WebPack](#fichier-de-configuration-webpack)
+1. [Installation de webpack 5](#installation-de-webpack-5)
+2. [Fichier de configuration webpack](#fichier-de-configuration-webpack)
 3. [Scripts npm](#scripts-npm)
 4. [Asset Management](#asset-management)
 5. [Output Management](#output-management)
@@ -13,14 +13,14 @@ Sommaire :
 7. [Code Splitting](#code-splitting)
 8. [Caching](#caching)
 
-## Installation de WebPack 5
+## Installation de webpack 5
 
 ```
 npm init -y
 npm install webpack webpack-cli --save-dev
 ```
 
-Suite à l'installation de WebPack nous avons initialisé les fichiers suivants : ./index.html et ./src/index.js.  
+Suite à l'installation de webpack nous avons initialisé les fichiers suivants : ./index.html et ./src/index.js.  
 On a ensuite configuré le fichier ./package.json de façon à ce qu'il soit privé (afin d'éviter une publication) et avons
 retiré l'entrée "main".
 
@@ -45,7 +45,7 @@ au début du fichier.
 Nous pouvons aussi supprimer le chargement de lodash qui était effectué dans le fichier ./dist/index.html, qui maintenant n'est plus utile car appelé 
 directement en JS.  
 
-En indiquant à WebPack les dépendances utiles pour le bon fonctionnement de l'app, il sera alors en mesure, lors de la 
+En indiquant à webpack les dépendances utiles pour le bon fonctionnement de l'app, il sera alors en mesure, lors de la 
 création du bundle de production, de créer un graph de dépendances et d'insérer de manière optimisée l'ensemble des scripts
 nécessaire dans le bon ordre.  
 
@@ -58,7 +58,7 @@ npx webpack
 
 Cela a pour effet de créer notre fichier ./dist/main.js.
 
-## Fichier de configuration WebPack
+## Fichier de configuration webpack
 
 Création d'un fichier ./webpack.config.js.  
 Si nous éxecutons de nouveau la commande `npx webpack` cela ira chercher par défaut le fichier de configuration webpack.config.js.  
@@ -82,7 +82,7 @@ Nous pouvons alors exécuter la commande suivante : `npm run build` et constater
 
 Documentation : [Asset Management](https://webpack.js.org/guides/asset-management/)
 
-Même si Webpack est orienté Javascript, il permet tout de même une prise en considération des autres types de fichiers (fonts, img, css).  
+Même si webpack est orienté Javascript, il permet tout de même une prise en considération des autres types de fichiers (fonts, img, css).  
 Pour cela nous utiliserons des **loaders** ou des **built-in Asset Modules**.
 Ces loaders suivront la même logique que les fichiers JavaScript, c'est à dire qu'un graph de dépendances sera créé et ainsi uniquement 
 les ressources utilisées seront exportées dans le dossier ./dist. Ce qui permettra de garder des fichiers de productions optimisés.  
@@ -119,15 +119,15 @@ npm i --save-dev sass-loader sass
 
 Nous avons ici besoin du package comprenant **Dart Sass** et non du package contenant **Node Sass**. Ce dernier ne supportant pas encore @use.
 Bien sûr, nous avons aussi besoin du loader Sass qui permettra d'interpréter les fichiers .scss.
-Si dans un projet, Dart Sass et Node Sass sont installé, il est possible d'informer Webpack de la préférence d'usage dans le fichier de configuration. 
+Si dans un projet, Dart Sass et Node Sass sont installé, il est possible d'informer webpack de la préférence d'usage dans le fichier de configuration. 
 
 Si on run la commande `npm run build` nous pouvons voir que le JavaScript a donc créé une deuxième balise \<style\> dans lequel il y a inséré le SASS en minifié.  
 Les valeurs en SASS ont bien surchargée les valeurs des propriétés en CSS.  
 
 ### Images
 
-Comme dit plus haut, WebPack contient déjà tout un tas de built-in Asset Modules, notament un permettant de gérer le chargement des images.
-Pour l'utiliser il suffit de modifier le fichier de configuration de WebPack en créant une nouvelle règle et en lui spécifiant le type d'asset.
+Comme dit plus haut, webpack contient déjà tout un tas de built-in Asset Modules, notament un permettant de gérer le chargement des images.
+Pour l'utiliser il suffit de modifier le fichier de configuration de webpack en créant une nouvelle règle et en lui spécifiant le type d'asset.
 Nous pouvons donc créer un nouveau dossier ./src/img contenant notre image test onepiece.svg.
 Maintenant, pour pouvoir utiliser cette image, il ne nous resete plus qu'à l'importer dans le fichier ./src/index.js. `import onePieceLogo from './img/onePiece_2.svg';`.
 
@@ -166,7 +166,7 @@ npm install --save-dev csv-loader xml-loader
 ## Output Management
 1. [Wrapping up](#wrapping-up)
 2. [Preparation](#preparation)
-3. [HtmlWebpackPlugin](#htmlwebpackplugin)
+3. [HtmlwebpackPlugin](#htmlwebpackplugin)
 
 Cette partie du guide étend la branche main.
 
@@ -198,9 +198,9 @@ C'est maintenant que l'on commence à voir la problématique, si l'on modifie le
 dans le fichier HTML, alors cela pourrait poser des problèmes d'oublis ce que l'on ne souhaite pas.  
 Pour résoudre ce problème nous allons chercher à exporter automatiquement le fichier HTML.
 
-### HtmlWebpackPlugin
+### HtmlwebpackPlugin
 
-Documentation : [HtmlWebpackPlugin](https://github.com/jantimon/html-webpack-plugin)
+Documentation : [HtmlwebpackPlugin](https://github.com/jantimon/html-webpack-plugin)
 
 Comme à chaque fois, installation de la dépendance + modification du fichier de configuration.
 
@@ -212,7 +212,7 @@ Lors de l'exécution de la commande `npm run build` un fichier ./dist/index.html
 présent dans le dossier alors celui-ci sera automatiquement écrasé !
 
 > 💡 Lors de la préparation de ce chapitre nous avons vidé à la main le dossier ./dist. Ce qui peut vite être problématique si l'on ne fait 
-> pas le ménage régulièrement dedans afin de ne garder uniquement les fichiers utiles.. ! Webpack permet de nettoyer ce dossier avant chaque build
+> pas le ménage régulièrement dedans afin de ne garder uniquement les fichiers utiles.. ! webpack permet de nettoyer ce dossier avant chaque build
 > grâce à un paramètre de l'option "**output**" `output.clean: true`.
 
 ## Development
@@ -254,12 +254,12 @@ Dans la plus part des cas nous utiliserons l'option webpack-dev-server.
 
 #### Le mode watch de webpack
 
-Vous pouvez demander à Webpack d'observer les fichiers concernés par le graphique des dépendances (dependency graph). Ainsi, lorsque l'un de ses
-fichiers sera mis à jours Webpack ira chercher cette mise à jours mais ne rafraîchira pas l'ensemble des fichiers.  
+Vous pouvez demander à webpack d'observer les fichiers concernés par le graphique des dépendances (dependency graph). Ainsi, lorsque l'un de ses
+fichiers sera mis à jours webpack ira chercher cette mise à jours mais ne rafraîchira pas l'ensemble des fichiers.  
 
 Pour cela, il faut mettre en place un nouveau script dans le fichier ./package.json `"watch": "webpack --watch"`.
 
-Lorsque Webpack est en train d'observer votre dependency graph les commandes ne sont plus disponible sur le terminal en cours, car une action  
+Lorsque webpack est en train d'observer votre dependency graph les commandes ne sont plus disponible sur le terminal en cours, car une action  
 est toujours en cours. Pour quitter le processus il suffit de faire un Ctrl+C. Et de choisir l'option "O".
 
 Si l'on exécute la commande `npm run watch` et que l'on tente d'utiliser le bouton. L'erreur précédemment ajouter au fichier ./src/print.js
@@ -319,7 +319,7 @@ Documentation : [code splitting](https://webpack.js.org/guides/code-splitting/)
 
 Cette partie du cours reprends la branche "Output Management".
 
-Le **code splitting** est l'une des fonctionnalité les plus intéressantes de WebPack. Elle permet 
+Le **code splitting** est l'une des fonctionnalité les plus intéressantes de webpack. Elle permet 
 de diviser votre code en un nombre infini de briques / paquets différents qui peuvent être chargé à 
 la demande ou en parallèle des autres paquets.  
 
@@ -400,8 +400,8 @@ Il existe d'autres loaders permettant de gérer la séparation du code, [mini-cs
 
 #### Dynamic imports
 
-Deux méthode différentes de gérer l'import dynamique / code splitting via WebPack.  
-La manière hérité des versions antérieurs de WebPack (déconseillée) : **require.ensure** et **import()**, qui est la syntaxe conforme à ECMAScript.
+Deux méthode différentes de gérer l'import dynamique / code splitting via webpack.  
+La manière hérité des versions antérieurs de webpack (déconseillée) : **require.ensure** et **import()**, qui est la syntaxe conforme à ECMAScript.
 
 > ❗ Warning 
 L'appel de la fonction import() utilise les Promises. Donc, si on utilise la fonction pour des projets ayant comme cible des anciens navigateurs. 
@@ -417,14 +417,14 @@ langue du navigateur de l'utilisateur).
 
 ### Prefetching / Preloading modules
 
-Depuis WebPack 4.6.0 nous pour profiter du support de **prefetching** (pré-récupération) et du **preloading** (pré-chargement).  
-En utilisant ces instructions en ligne (*inline directives*) lorsque l'on déclare notre import() permet à WebPack de renseigner au 
+Depuis webpack 4.6.0 nous pour profiter du support de **prefetching** (pré-récupération) et du **preloading** (pré-chargement).  
+En utilisant ces instructions en ligne (*inline directives*) lorsque l'on déclare notre import() permet à webpack de renseigner au 
 navigateur des indifications autour des ressources (*Resource Hint*) :
 1. **prefetch** : la ressource est probablement nécessaire pour un besoin futur (*for some navigation in the future*)
 2. **preload** : la ressource est nécessaire au sein de la navigation actuelle (*during the current navigation*)  
 
 > 💡 Tips 
-WebPack ajoutera les indications de pré-récupération après que le chargement global du parent sera terminé ! Le prefetching n'impact 
+webpack ajoutera les indications de pré-récupération après que le chargement global du parent sera terminé ! Le prefetching n'impact 
 donc pas le chargement du contenu de la page actuelle. Il attend que le navigateur soit inactif (*idle*).  
 
 L'indication de pré-chargement possède tout un tas (*has a bunch*) de différences avec la pré-récupération : 
@@ -443,14 +443,14 @@ Imaginons, une page simple et rapide à charger, donc l'un des composant (*compo
 un loader (*LoadingIndicator*) jusqu'à ce que le chargement de la librairie soit terminé.
 
 > ❗ Warning 
-Mal utiliser la fonctionnalité **preload** de WebPack peut entraîner à l'inverse de sérieux ralentissement du chargement des pages. 
+Mal utiliser la fonctionnalité **preload** de webpack peut entraîner à l'inverse de sérieux ralentissement du chargement des pages. 
 Il faut donc l'utiliser avec précautions.  
 
 ### Bundle Analysis
 
 Une fois que vous avez commencé à séparer efficacement votre code, il peut s'avérer utile d'analyser le rendu et de vérifier comment les modules 
 se sont comporter pendant l'export (*where modules have ended up*).  
-Pour cela il existe de nombreux outils, dont l'[**outil officiel d'analyse de WebPack**](https://github.com/webpack/analyse).  
+Pour cela il existe de nombreux outils, dont l'[**outil officiel d'analyse de webpack**](https://github.com/webpack/analyse).  
 Mais il existe aussi de nombreux outils communautaires à essayer : 
 - [**webpack-chart**](https://alexkuz.github.io/webpack-chart/) : avec des diagrammes pour visualiser les stats de webpack
 - [**webpack-visualizer**](https://chrisbateman.github.io/webpack-visualizer/) : visualise et analyse l'ensemble du bundle afin d'observer quel 
@@ -467,14 +467,14 @@ Pour poursuivre ce chapitre : [**lazy loading**](#lazy-loading) et [**caching**]
 ## Caching
 1. [**Output Filenames**](#output-filenames)
 
-Webpack permet d'empaqueter nos applications modulaires permettant ainsi d'obtenir un dossier ./dist.  
+webpack permet d'empaqueter nos applications modulaires permettant ainsi d'obtenir un dossier ./dist.  
 Une fois que le contenu de ce dossier est déposé sur un serveur, un client (ex: browser) pourra ainsi accéder à ce serveur et donc à notre site et 
 ses assets.  
 Cette dernière étape peut-être complexe, en effet les navigateur utilisent une technique appelé le **caching** permettant aux sites de se charger plus 
 vite en diminuant le traffic non essentiel.  
 Seulement, ça peut poser problème lorsque l'on tente de mettre une nouvelle version de notre code en ligne !
 
-La suite du guide, va donc se concentrer sur la configuration nécessaire à Webpack afin de s'assurer que les fichiers produits lors de la compilation 
+La suite du guide, va donc se concentrer sur la configuration nécessaire à webpack afin de s'assurer que les fichiers produits lors de la compilation 
 pourront rester dans le cache à moins que leur contenu n'ait changé. 
 
 ### Output Filenames
@@ -489,3 +489,55 @@ En effet, webpack inclut dans les fichiers des points d'entrée des éléments c
 de leur hash.  
 
 Cela n'est pas le cas sur toutes les versions de webpack, cependant, nous allons voir comment éviter cela. 
+
+### Extracting Boilerplate
+
+Comme nous l'avons appris dans la [**partie précédente autour du code splitting**](#code-splitting), l'utilisation du plugin [**SplitChunksPlugin](https://webpack.js.org/plugins/split-chunks-plugin/) peut être utilisé pour séparer les modules dans des bundles différents. En associant la valeur "**single**" à l'option "**optimization.runtimeChunk**" webpack fournit donc une fonctionnalité permettant de séparer le code runtime du reste.
+
+```
+./webpack.config.js
+
+optimization: {
+    runtimeChunk: 'single'
+}
+```
+
+Si on exécute la fonction `npm run build` nous pourrons observer la création d'un nouveau fichier "**./dist/runtime.\[hash].js**" ainsi que le fichier "**./dist/main.\[hash].js**".
+
+Nous l'avons aussi vu dans la partie précédente, il est préférable d'extraire les bouts de codes (*chunks*) qui sont externes à notre développement (ex: lodash, react etc.).  
+En effet, ceux-ci sont moins amené à évoluer et il est donc préférable de les laisser en cache. 
+Pour cela nous allons utilisé l'option "**cacheGroups**" du "**SplitChunksPlugin**". 
+
+```
+./webpack.config.js
+
+optimization: {
+    runtimeChunk: 'single', 
+    splitChunks: {
+        cacheGroups: {
+            vendor: {
+                test: /[\\/]node_modules[\\/]/,
+                name: 'vendors',
+                chunks: 'all'
+            }
+        }
+    }
+}
+```
+
+Si on exécute de nouveau la commande `npm run build` nous pouvons voir que notre fichier ./dist/vendors.node_modules_lodash.js a été renommé en ./dist/vendors.\[hash].js.  
+Ainsi, nous nous retrouvons plus qu'avec un seul fichier **vendors** pour toutes les modules nodes chargés dans le projet.
+
+Si jamais nous souhaitons obtenir 1 fichier par fournisseur (*vendor*) nous pouvons remettre la configuration suivante : 
+
+```
+./webpack.config.js
+
+optimization: {
+    runtimeChunk: 'single', 
+    splitChunks: {
+            chunks: 'all'
+        }
+    }
+}
+```
