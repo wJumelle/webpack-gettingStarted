@@ -466,6 +466,8 @@ Pour poursuivre ce chapitre : [**lazy loading**](#lazy-loading) et [**caching**]
 
 ## Caching
 1. [**Output Filenames**](#output-filenames)
+2. [**Extracting Boilerplate**](#extracting-boilerplate)
+3. [**Module Identifiers**](#module-identifiers)
 
 webpack permet d'empaqueter nos applications modulaires permettant ainsi d'obtenir un dossier ./dist.  
 Une fois que le contenu de ce dossier est déposé sur un serveur, un client (ex: browser) pourra ainsi accéder à ce serveur et donc à notre site et 
@@ -541,3 +543,25 @@ optimization: {
     }
 }
 ```
+
+### Module Identifiers
+
+Pour cette partie nous avons besoin d'un nouveau module ./src/print.js.
+Nous devons ajouter l'import de ce module dans le fichier ./src/index.js, dans ce même fichier nous allons indiquer qu'au clic sur l'élément généré 
+nous appelerons la fonction importée du module print.js. 
+
+Il y a deux résultats possibles, en fonction de la façon d'importer le module que nous utilisons : 
+- si nous utilisons la dernière méthode vu dans le chapitre [**code splitting: dynamic imports**](#dynamic-imports) nous verrons qu'un fichier supplémentaire est généré ./dist/src_print.\[hash].js  
+- si nous utilisons la méthode simple `import Print from './print.js'` alors le module print.js sera fusionné lors de la compilation dans le fichier ./dist/main.\[hash].js.
+
+Pour expérimenter la section module identifiers, nous sommes obligé d'opter pour la seconde méthode, ainsi nous verrons l'impact qu'aura la modification du fichier ./src/print.js sur la compilation du fichier ./dist/main.\[hash].js.
+
+L'impact attendu est le suivant, lors du build le hash de nos 3 fichiers ./dist/\[main|vendors|runtime].\[hash].js va changer.  
+Pour les fichiers main et runtime, c'est logique, cependant le hash du fichier vendors ne devrait pas avoir évolué.  
+Lors de mon test de suivi du guide, je n'ai pas constaté de variation du hash des fichiers \[vendors|runtime], nous allons tout de même voir 
+comment bloquer la variation pour le fichier ./dist/vendors.\[hash].js. 
+
+Pour cela nous avons besoin d'ajouter un paramètre à l'option "**optimization**" : `optimization.moduleIds: 'deterministic'`.  
+Maintenant, malgré les changements de notre code local le hash du fichier ./dist/vendors.js ne devrait varier.  
+Pour cela il suffit simplement d'essayer d'éditer le fichier ./src/index.js en enlevant l'import et le call de la fonction du fichier ./src/print.js, ainsi 
+nous devrions voir varier le hash des fichiers ./dist/\[main|runtime].\[hash].js mais pas celui du fichier ./dist/vendors.\[hash].js.
