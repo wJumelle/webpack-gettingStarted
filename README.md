@@ -328,7 +328,7 @@ de bundles plus petits, contrôle du chargement des ressources => optimisation d
 Il y a trois approches différentes autour du "code splitting" : 
 1. [**les points d'entrées (entry points)**](#entry-point) qui sépare le code manuellement en déclarant des entrées (entry)
 2. [**Prevent duplication**](#prevent-duplication) qui utilise les [Entry dependencies](https://webpack.js.org/configuration/entry-context/#dependencies) ou le [SplitChunksPlugin](https://webpack.js.org/plugins/split-chunks-plugin/) qui permettent de dédoublonner et diviser les gros morceaux de codes (chunks).
-3. **Dynamic imports** qui divise le code à l'aide des imports à l'aides d'inline functions appelées dans les modules.
+3. [**Dynamic imports**](#dynamic-imports) qui divise le code à l'aide des imports à l'aides d'inline functions appelées dans les modules.
 
 #### Entry Points
 
@@ -397,3 +397,13 @@ Lors du build nous allons avoir la génération de 3 fichiers JS différents : .
 
 Il existe d'autres loaders permettant de gérer la séparation du code, [mini-css-extract-plugin](https://webpack.js.org/plugins/mini-css-extract-plugin) pour le CSS par exemple.
 
+##### Dynamic imports
+
+Deux méthode différentes de gérer l'import dynamique / code splitting via WebPack.  
+La manière hérité des versions antérieurs de WebPack (déconseillée) : **require.ensure** et **import()**, qui est la syntaxe conforme à ECMAScript.
+
+> ❗ Warning 
+L'appel de la fonction import() utilise les Promises. Donc, si on utilise la fonction pour des projets ayant comme cible des anciens navigateurs. 
+Il faut veiller à mettre en place les polyfills nécessaire ([**es6-promise](https://github.com/stefanpenner/es6-promise) ou [**promise-polyfill](https://github.com/taylorhakes/promise-polyfill))
+
+Pour commencer, nous nettoyons les fichiers ./webpack.config.js et nous supprimons le fichier ./src/another-module.js.
