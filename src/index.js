@@ -1,14 +1,28 @@
-// Import de lodash pour gérer la dépendance du script d'exemple
-import _ from 'lodash';
+/* Methode sans async */ 
+// function getComponent() {   
+//     return import('lodash').then(({default: _}) => {
+//         const element = document.createElement('div');
 
-function component() {
+//         element.innerHTML = _.join(['Hello', 'webpack', 'Code Splitting Dynamic Import'], ' ');
+
+//         return element;
+//     }).catch((error) => 'An error occured while loading the component');
+// }
+
+// getComponent().then((component) => {
+//     document.body.appendChild(component);
+// });
+
+/* Méthode avec async */
+async function getComponent() {   
     const element = document.createElement('div');
-    const btn = document.createElement('button');
+    const { default: _ } = await import('lodash');
 
-    // Lodash, currently included via a script, is required for this line to work
-    element.innerHTML = _.join(['Bonjour', 'Webpack - Code splitting - Single entry point'], ' ');
+    element.innerHTML = _.join(['Hello', 'webpack', 'Code Splitting Dynamic Import'], ' ');
 
     return element;
 }
 
-document.body.appendChild(component());
+getComponent().then((component) => {
+    document.body.appendChild(component);
+});

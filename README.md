@@ -406,4 +406,5 @@ La manière hérité des versions antérieurs de WebPack (déconseillée) : **re
 L'appel de la fonction import() utilise les Promises. Donc, si on utilise la fonction pour des projets ayant comme cible des anciens navigateurs. 
 Il faut veiller à mettre en place les polyfills nécessaire ([**es6-promise](https://github.com/stefanpenner/es6-promise) ou [**promise-polyfill](https://github.com/taylorhakes/promise-polyfill))
 
-Pour commencer, nous nettoyons les fichiers ./webpack.config.js et nous supprimons le fichier ./src/another-module.js.
+Pour commencer, nous nettoyons les fichiers ./webpack.config.js et nous supprimons le fichier ./src/another-module.js.  
+Enfin, nous éditons le fichier ./src/index.js afin de lui faire importer de manière dynamique (à l'aide des Promises) le module lodash.
