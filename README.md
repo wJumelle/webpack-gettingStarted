@@ -478,3 +478,14 @@ La suite du guide, va donc se concentrer sur la configuration nécessaire à Web
 pourront rester dans le cache à moins que leur contenu n'ait changé. 
 
 ### Output Filenames
+
+Nous le savons déjà l'option "**output**" du fichier ./webpack.congif.js possède un paramètre "**filename**" que l'on peut configurer à l'aide d'éléments de [**substitutions**](https://webpack.js.org/configuration/output/#outputfilename).  
+Ainsi, le substitut \[contenthash] permet d'indiquer un hash unique basé sur le contenu de l'asset. A chaque mise à jour, cette valeur va donc changer.  
+Allons donc modifier l'option "**output.filename**" et transformons la en `output.filename : [name].[contenthash].js`, ainsi si nous possédons plusieurs points d'entrée 
+(*entry points*) nous obtiendrons des noms de fichiers différents + nous obtiendrons des noms de fichiers différents si le point d'entrée a été mis à jour.  
+
+Si aucune modification n'est effectué sur le fichier, la valeur du hash \[contenthash] ne devrait pas évoluer, cependant cela peut arriver.  
+En effet, webpack inclut dans les fichiers des points d'entrée des éléments courant (*boilerplate*) comme le **runtime** et le **manifest**, ce qui fait donc évoluer la valeur 
+de leur hash.  
+
+Cela n'est pas le cas sur toutes les versions de webpack, cependant, nous allons voir comment éviter cela. 
