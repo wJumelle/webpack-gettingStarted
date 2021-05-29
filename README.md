@@ -443,4 +443,22 @@ un loader (*LoadingIndicator*) jusqu'à ce que le chargement de la librairie soi
 
 > ❗ Warning 
 Mal utiliser la fonctionnalité **preload** de WebPack peut entraîner à l'inverse de sérieux ralentissement du chargement des pages. 
-Il faut donc l'utiliser avec précautions. 
+Il faut donc l'utiliser avec précautions.  
+
+### Bundle Analysis
+
+Une fois que vous avez commencé à séparer efficacement votre code, il peut s'avérer utile d'analyser le rendu et de vérifier comment les modules 
+se sont comporter pendant l'export (*where modules have ended up*).  
+Pour cela il existe de nombreux outils, dont l'[**outil officiel d'analyse de WebPack**](https://github.com/webpack/analyse).  
+Mais il existe aussi de nombreux outils communautaires à essayer : 
+- [**webpack-chart**](https://alexkuz.github.io/webpack-chart/) : avec des diagrammes pour visualiser les stats de webpack
+- [**webpack-visualizer**](https://chrisbateman.github.io/webpack-visualizer/) : visualise et analyse l'ensemble du bundle afin d'observer quel 
+module nécessiterait éventuellement d'être optimisé / fragmenté car utilisant trop volumineux. 
+- [**webpack-bundle-analyzer**](https://github.com/webpack-contrib/webpack-bundle-analyzer) : un plugin et un utilitaire de CLI qui représente le contenu 
+du bundle de manière pratique (arborescence zoomable)
+- [**webpack bundle optimize helper**](https://webpack.jakoblind.no/optimize) : analyseur de bundle qui émet des possibilité d'améliorations pour réduire la 
+taille du bundle global. 
+- [**bundle-stats**](https://github.com/bundle-stats/bundle-stats) : génère un rapport autour du bundle (taille, assets, modules) et compare le résultat avec 
+différents builds. 
+
+Pour poursuivre ce chapitre : [**lazy loading**](#lazy-loading) et [**caching**](#caching).
