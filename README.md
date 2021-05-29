@@ -12,6 +12,9 @@ Sommaire :
 6. [Development](#development)
 7. [Code Splitting](#code-splitting)
 8. [Caching](#caching)
+9. [Authoring Librairies](#authoring-librairies)
+10. [Environment variables](#environment-variables)
+11. [Hot Module Replacement](#hot-module-replacement)
 
 ## Installation de webpack 5
 
@@ -565,3 +568,21 @@ Pour cela nous avons besoin d'ajouter un paramètre à l'option "**optimization*
 Maintenant, malgré les changements de notre code local le hash du fichier ./dist/vendors.js ne devrait varier.  
 Pour cela il suffit simplement d'essayer d'éditer le fichier ./src/index.js en enlevant l'import et le call de la fonction du fichier ./src/print.js, ainsi 
 nous devrions voir varier le hash des fichiers ./dist/\[main|runtime].\[hash].js mais pas celui du fichier ./dist/vendors.\[hash].js.
+
+## Authoring Librairies
+
+Documentation : [**Authoring Librairies**](https://webpack.js.org/guides/author-libraries/)
+
+Nous n'allons pas aborder ce contenu trop spécifique.
+
+## Environment Variables
+
+Documentation : [**Environment Variables**](https://webpack.js.org/guides/environment-variables/)
+
+Afin de différencier les différents états d'avancée du projet (production/dévelopement) dans le fichier ./webpack.config.js, il est conseillé d'utiliser les variables d'environnement.
+
+La commande webpack liée à ce type de paramétrage est la commande `npx webpack --env" à laquelle on peut passer autant d'options que l'on désire.
+
+## Hot Module Replacement
+
+Documentation : [**Hot Module Replacement**](https://webpack.js.org/guides/hot-module-replacement/)
