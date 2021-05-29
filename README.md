@@ -8,19 +8,10 @@ Sommaire :
 2. [Fichier de configuration WebPack](#fichier-de-configuration-webpack)
 3. [Scripts npm](#scripts-npm)
 4. [Asset Management](#asset-management)
-    1. [CSS](#css)
-    2. [SASS](#sass)
-    3. [Images](#images)
-    4. [Fonts](#fonts)
-    5. [Loading Datas](#loading-datas)
 5. [Output Management](#output-management)
-    1. [Wrapping up](#wrapping-up)
-    2. [Preparation](#preparation)
-    3. [HtmlWebpackPlugin](#htmlwebpackplugin)
 6. [Development](#development)
-    1. [Sources maps](#source-maps)
-    2. [Choisir un outil de développement](#choisir-un-outil-de-developpement)
 7. [Code Splitting](#code-splitting)
+8. [Caching](#caching)
 
 ## Installation de WebPack 5
 
@@ -83,6 +74,11 @@ Par exemple, nous avons ajouté la commande "**build**" qui permet d'exécuter w
 Nous pouvons alors exécuter la commande suivante : `npm run build` et constater que notre bundle a bien été de nouveau généré.  
 
 ## Asset Management
+1. [CSS](#css)
+2. [SASS](#sass)
+3. [Images](#images)
+4. [Fonts](#fonts)
+5. [Loading Datas](#loading-datas)
 
 Documentation : [Asset Management](https://webpack.js.org/guides/asset-management/)
 
@@ -168,6 +164,9 @@ npm install --save-dev csv-loader xml-loader
 > Il est impossible d'effectuer un import ciblé du style `import { foo } from './data.json'`
 
 ## Output Management
+1. [Wrapping up](#wrapping-up)
+2. [Preparation](#preparation)
+3. [HtmlWebpackPlugin](#htmlwebpackplugin)
 
 Cette partie du guide étend la branche main.
 
@@ -217,6 +216,8 @@ présent dans le dossier alors celui-ci sera automatiquement écrasé !
 > grâce à un paramètre de l'option "**output**" `output.clean: true`.
 
 ## Development
+1. [Sources maps](#source-maps)
+2. [Choisir un outil de développement](#choisir-un-outil-de-developpement)
 
 Cette partie du guide étend la branche outputManagement.
 
@@ -462,3 +463,18 @@ taille du bundle global.
 différents builds. 
 
 Pour poursuivre ce chapitre : [**lazy loading**](#lazy-loading) et [**caching**](#caching).
+
+## Caching
+1. [**Output Filenames**](#output-filenames)
+
+Webpack permet d'empaqueter nos applications modulaires permettant ainsi d'obtenir un dossier ./dist.  
+Une fois que le contenu de ce dossier est déposé sur un serveur, un client (ex: browser) pourra ainsi accéder à ce serveur et donc à notre site et 
+ses assets.  
+Cette dernière étape peut-être complexe, en effet les navigateur utilisent une technique appelé le **caching** permettant aux sites de se charger plus 
+vite en diminuant le traffic non essentiel.  
+Seulement, ça peut poser problème lorsque l'on tente de mettre une nouvelle version de notre code en ligne !
+
+La suite du guide, va donc se concentrer sur la configuration nécessaire à Webpack afin de s'assurer que les fichiers produits lors de la compilation 
+pourront rester dans le cache à moins que leur contenu n'ait changé. 
+
+### Output Filenames
