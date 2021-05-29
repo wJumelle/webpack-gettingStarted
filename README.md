@@ -397,7 +397,7 @@ Lors du build nous allons avoir la génération de 3 fichiers JS différents : .
 
 Il existe d'autres loaders permettant de gérer la séparation du code, [mini-css-extract-plugin](https://webpack.js.org/plugins/mini-css-extract-plugin) pour le CSS par exemple.
 
-##### Dynamic imports
+#### Dynamic imports
 
 Deux méthode différentes de gérer l'import dynamique / code splitting via WebPack.  
 La manière hérité des versions antérieurs de WebPack (déconseillée) : **require.ensure** et **import()**, qui est la syntaxe conforme à ECMAScript.
@@ -408,3 +408,39 @@ Il faut veiller à mettre en place les polyfills nécessaire ([**es6-promise](ht
 
 Pour commencer, nous nettoyons les fichiers ./webpack.config.js et nous supprimons le fichier ./src/another-module.js.  
 Enfin, nous éditons le fichier ./src/index.js afin de lui faire importer de manière dynamique (à l'aide des Promises) le module lodash.
+
+> 💡 Tips  
+Il est possible de fournir une [**expression dynamique**](https://webpack.js.org/api/module-methods/#dynamic-expressions-in-import) à la fonction *import()* lorsque vous 
+aurez besoin du chargement d'un module en fonction d'une variable qui sera calculé plus tard. (ex: chargement des fichiers de traductions de langues en fonction de la 
+langue du navigateur de l'utilisateur).
+
+### Prefetching / Preloading modules
+
+Depuis WebPack 4.6.0 nous pour profiter du support de **prefetching** (pré-récupération) et du **preloading** (pré-chargement).  
+En utilisant ces instructions en ligne (*inline directives*) lorsque l'on déclare notre import() permet à WebPack de renseigner au 
+navigateur des indifications autour des ressources (*Resource Hint*) :
+1. **prefetch** : la ressource est probablement nécessaire pour un besoin futur (*for some navigation in the future*)
+2. **preload** : la ressource est nécessaire au sein de la navigation actuelle (*during the current navigation*)  
+
+> 💡 Tips 
+WebPack ajoutera les indications de pré-récupération après que le chargement global du parent sera terminé ! Le prefetching n'impact 
+donc pas le chargement du contenu de la page actuelle. Il attend que le navigateur soit inactif (*idle*).  
+
+L'indication de pré-chargement possède tout un tas (*has a bunch*) de différences avec la pré-récupération : 
+- un bout de code à pré-charger (*a preloaded chunk*) se chargera en parallèle du code parent =/= un bout de code à pré-récupérer 
+se chargera après que le code parent soit entièrement chargé
+- un bout de code à pré-charger a une importance moyenne et donc commence à se charger immédiatement =/= un bout de code à pré-récupérer 
+se chargera une fois que le navigateur sera inactif
+- un bout de code à pré-charger peut être instantanément utilisé par le code parent =/= un bout de code à pré-récupérer pourra être utilisé 
+n'importe quand à l'avenir !
+- le [support des navigateurs](https://www.machmetrics.com/speed-blog/guide-to-browser-hints-preload-preconnect-prefetch/) est différents entre les deux (rel = prefetch / rel = preload)
+
+Exemple avec prefetch : `import(/* webpackPrefetch: true */ './path/to/LoginModal.js');` nous donnera `<link rel="prefetch" href="login-modal-chunk.js">`.  
+
+Exemple avec preload : `import(/* webpackPreload: true */ 'ChartingLibrary');` nous donnera `<link rel="preload" href="ChartingLibrary.js">`. 
+Imaginons, une page simple et rapide à charger, donc l'un des composant (*component: chartComponent*) nécessiterait le chargement d'une grosse librairie (*library: chartingLibrary*). Si la page a fini de s'afficher et de se charger avant que le chargement de la librairie soit terminé, alors cette page affichera 
+un loader (*LoadingIndicator*) jusqu'à ce que le chargement de la librairie soit terminé.
+
+> ❗ Warning 
+Mal utiliser la fonctionnalité **preload** de WebPack peut entraîner à l'inverse de sérieux ralentissement du chargement des pages. 
+Il faut donc l'utiliser avec précautions. 
