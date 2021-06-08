@@ -577,11 +577,20 @@ Nous n'allons pas aborder ce contenu trop spécifique.
 
 ## Environment Variables
 
-Documentation : [**Environment Variables**](https://webpack.js.org/guides/environment-variables/)
+Documentation : 
+1. [**Environment Variables**](https://webpack.js.org/guides/environment-variables/)
+2. [**Environment Variables - Options**](https://webpack.js.org/api/cli/#environment-options)
 
 Afin de différencier les différents états d'avancée du projet (production/dévelopement) dans le fichier ./webpack.config.js, il est conseillé d'utiliser les variables d'environnement.
 
 La commande webpack liée à ce type de paramétrage est la commande `npx webpack --env" à laquelle on peut passer autant d'options que l'on désire.
+
+Il existe 3 variables d'environnement pré-définies : 
+1. `WEBPACK_SERVE` qui vaut **true** si la commande `serve|s` est utilisée
+2. `WEBPACK_BUILD` qui vaut **true** si la commande `build|bundle|b` est utilisée
+3. `WEBPACK_WATCH` qui vaut **true** si la commande `--watch|watch|w` est utilisée
+
+Pour éviter de faire face à des oublies de déclaration de variable d'environnement personnalisée, il est préférable d'utiliser les variables pré-définies. 
 
 ## Hot Module Replacement
 
