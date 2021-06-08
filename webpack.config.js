@@ -37,11 +37,18 @@ module.exports = (env, argv) => {
     return {
         //mode: env.production ? 'production' : 'development',
         mode: env.WEBPACK_SERVE ? 'development' : 'production',
-        entry: './src/index.js',
+        entry: { 
+            index: './src/index.js'
+        },
+        devtool: 'inline-source-map',
+        devServer: {
+          contentBase: './dist',
+         hot: true,
+        },
         plugins: [
-        new HtmlWebpackPlugin({
-            title: 'Caching',
-        }),
+            new HtmlWebpackPlugin({
+                title: 'Hot Module Replacement',
+            }),
         ],
         output: {
             filename: '[name].[contenthash].js',

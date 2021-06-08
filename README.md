@@ -16,6 +16,10 @@ Sommaire :
 10. [Environment variables](#environment-variables)
 11. [Hot Module Replacement](#hot-module-replacement)
 
+## Best Practises 
+
+Documentation : [Build Performances](https://webpack.js.org/guides/build-performance/)
+
 ## Installation de webpack 5
 
 ```
@@ -594,4 +598,42 @@ Pour éviter de faire face à des oublies de déclaration de variable d'environn
 
 ## Hot Module Replacement
 
-Documentation : [**Hot Module Replacement**](https://webpack.js.org/guides/hot-module-replacement/)
+1. [**Activation du HMR**](#activation-du-hmr)
+2. [**Gotchas**](#gotchas)
+
+Documentation : 
+1. [**Hot Module Replacement - Guides**](https://webpack.js.org/guides/hot-module-replacement/)
+2. [**Hot Module Replacement - Concept**](https://webpack.js.org/concepts/hot-module-replacement/)
+
+La fonctionnalité **Hot Module Replacement** est l'une des plus utile qu'offre webpack. Elle permet à tout type de modules d'être mis à jour 
+en temps réel sans avoir besoin d'un rafraîchissement du navigateur.  
+La page de la documentation *guides* se focus sur l'implémentation, tandis que la page sur le *concept* donne plus de détails sur le fonctionnement 
+en lui-même de HMR. 
+
+> ❗ HMR n'est pas prévu à l'usage d'une application en mode production (voir [**production building guide**](https://webpack.js.org/guides/production)).  
+
+Pour tester le HMR, nous allons mettre remettre en place l'environnement tel qu'il était pour le chapitre [**6. Developpement**](#development).
+
+### Activation du HMR
+
+Cette fonctionnalité est intéressante de par son efficacité sur notre productivité. Tout ce qu'il reste à faire pour l'activer est de modifier le fichier
+*./webpack.config.js* et d'utiliser le plugin par défaut de webpack pour le HMR.  
+Nous ne gardons qu'un seul point d'entrée, avec ./src/index.js.  
+
+> 💡 Il est possible de modifier le fichier de configuration de webpack en ligne de commande, via la commande `npm webpack serve --hot-only`.
+
+Si nous exécutons le serveur à l'aide de la commande `npm run start` et qu'en parallèle nous modifions le fichier ./src/print.js, nous pouvons voir
+que la fenêtre est rafraîchit et que la mise à jour à bien été prise en compte. 
+
+Ensuite, nous devons insérer le code suivant dans le fichier ./src/index.js, afin de pouvoir détecter le HMR sur le fichier ./src/print.js. 
+
+```
+if (module.hot) {
+    module.hot.accept('./print.js', function() {
+        console.log('Accepting the updated printMe module!');
+        printMe();
+    })
+}
+```
+
+### Gotchas
