@@ -604,6 +604,7 @@ Pour éviter de faire face à des oublies de déclaration de variable d'environn
 Documentation : 
 1. [**Hot Module Replacement - Guides**](https://webpack.js.org/guides/hot-module-replacement/)
 2. [**Hot Module Replacement - Concept**](https://webpack.js.org/concepts/hot-module-replacement/)
+3. [**Hot Module Replacement - API**](https://webpack.js.org/api/hot-module-replacement/)
 
 La fonctionnalité **Hot Module Replacement** est l'une des plus utile qu'offre webpack. Elle permet à tout type de modules d'être mis à jour 
 en temps réel sans avoir besoin d'un rafraîchissement du navigateur.  
@@ -618,14 +619,11 @@ Pour tester le HMR, nous allons mettre remettre en place l'environnement tel qu'
 
 Cette fonctionnalité est intéressante de par son efficacité sur notre productivité. Tout ce qu'il reste à faire pour l'activer est de modifier le fichier
 *./webpack.config.js* et d'utiliser le plugin par défaut de webpack pour le HMR.  
-Nous ne gardons qu'un seul point d'entrée, avec ./src/index.js.  
+Nous ne gardons qu'un seul point d'entrée, avec ./src/index.js et nous ajoutons l'option `devServer.hot: true`.
 
 > 💡 Il est possible de modifier le fichier de configuration de webpack en ligne de commande, via la commande `npm webpack serve --hot-only`.
 
-Si nous exécutons le serveur à l'aide de la commande `npm run start` et qu'en parallèle nous modifions le fichier ./src/print.js, nous pouvons voir
-que la fenêtre est rafraîchit et que la mise à jour à bien été prise en compte. 
-
-Ensuite, nous devons insérer le code suivant dans le fichier ./src/index.js, afin de pouvoir détecter le HMR sur le fichier ./src/print.js. 
+Ensuite, nous devons insérer le code suivant dans le fichier *./src/index.js*, afin de pouvoir détecter les modifications sur le fichier ./src/print.js. 
 
 ```
 if (module.hot) {
@@ -636,4 +634,71 @@ if (module.hot) {
 }
 ```
 
+Maintenant, si nous exécutons le serveur à l'aide de la commande `npm run start` et qu'en parallèle nous modifions le fichier *./src/print.js*, nous pouvons voir le message 
+**'Accepting the updated printMe module!'** dans la console et observer que le HMR a bien détecté une màj sur le fichier. 
+
 ### Gotchas
+
+Nous savons que le fichier *./src/print.js* sert de base à l'export de la fonction print(), à laquelle on accède en cliquant sur le noeud qui a été inséré dans notre DOM.  
+Seulement, lorsque nous cliquons sur cet élément du DOM nous voyons que celui-ci exécute toujours l'ancienne fonction print().  
+Cela se produit tout simplement car le gestionnaire d'événement de l'élément du DOM est toujours lié à l'ancienne fonction print().
+
+❗ A ce niveau du guide je fais face à un problème assez particulier, lorsque je rafraîchis le fichier ./src/print.js, aucun problème. La console m'indique la
+mise à jours correctement.  
+Seulement, lorsque je mets à jours le fichier ./src/index.js, cela m'affiche un warning dans la console "*\[HMR\] Error: Aborted because 138 is not accepted*" et lance
+un reload complet de l'app.  
+
+Pour isoler ce problème et stopper le rafraîchissement il est possible d'indiquer à webpack de ne pas reload l'app en modifiant le paramètre `hot: true` en 
+`hotOnly: true`.  
+Ainsi, le navigateur ne reload pas l'app et on peut débugger convenablement. 
+
+Il existe deux API pour la gestion du HMR, la [**Module API**](https://webpack.js.org/api/hot-module-replacement/#module-api) et la [**Management API**](https://webpack.js.org/api/hot-module-replacement/#management-api).  
+C'est dans la **Module API** qu'est référencé la fonction *module.hot.accept()* que l'on utilise dans le fichier ./src/index.js. 
+
+La fonction s'écrit de la sorte : 
+```
+module.hot.accept(
+  dependencies, // Either a string or an array of strings
+  callback, // Function to fire when the dependencies are updated
+  errorHandler // (err, {moduleId, dependencyId}) => {}
+);
+```
+
+Afin de clarifier le code du warning nous pouvons changer la valeur de la propriété `optimization.moduleIds = 'named'` à la place de '*deterministic*'.
+Ainsi, nous n'avons plus l'ID du module dans le warning mais le fichier en cause du warning.
+
+[Suite du problème](https://blog.nativescript.org/deep-dive-into-hot-module-replacement-with-webpack-part-two-handling-updates/)
+[Fonction module.hot.dispose()](https://www.javascriptstuff.com/webpack-hmr-tutorial/)
+
+On comprend donc qu'il faut utiliser la fonction `module.hot.accept` en mode **self** + gérer les dépendences pour le fichier *./src/index.js*. 
+
+Le mode self de la fonction va regénérer le fichier mais cela entraîne un autre problème. Dans l'état, nous nous retrouvons avec une ligne *Hello webpack Hot Module Replacement* par refresh du fichier *./src/index.js*.  
+Ce problème correspond donc bien à la problématique souligné par ce chapitre du guide.  
+Pour résoudre ce problème, nous devons maintenant utiliser la fonction `module.hot.dispose` et modifier légèrement le code de notre fichier 
+*./src/index.js* afin que l'élément que l'on insère soit contenu dans une variable.  
+Le code définitif et fonctionnel s'écrit donc ainsi : 
+
+``` 
+if (module.hot) {
+    //Self
+    module.hot.dispose(function() {
+        element.parentNode.removeChild(element);
+      });
+    module.hot.accept();
+
+    //Dependencies 
+    module.hot.accept(
+        './print.js', 
+        function() {
+            console.log('Accepting the updated printMe module!');
+            element.parentNode.removeChild(element);
+            getComponent().then((component) => {
+                document.body.appendChild(component);
+            });
+        },
+        (err, {moduleId, dependencyId}) => {
+            console.log('Erreur : ', err, moduleId, dependencyId);
+        }
+    );
+}
+``` 

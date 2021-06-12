@@ -5,7 +5,7 @@
 import Print from './print';
 
 async function getComponent() {   
-    const element = document.createElement('div');
+    element = document.createElement('div');
     const { default: _ } = await import('lodash');
 
     element.innerHTML = _.join(['Hello', 'webpack', 'Hot Module Replacement'], ' ');
@@ -14,18 +14,35 @@ async function getComponent() {
     return element;
 }
 
+let element;
+
 getComponent().then((component) => {
     document.body.appendChild(component);
 });
 
 
-/* Dans la partie autour de l'HRM, il est conseillé d'écrire ce bout de code afin d'écouter les màjs du fichier ./src/print.js 
-    ici cela ne semble pas être nécessaire */
+/* Ecoute de la màj des fichiers afin de remplacer le contenu dynamiquement */
 if (module.hot) {
-    module.hot.accept('./print.js', function() {
-        console.log('Accepting the updated printMe module!');
-        Print();
-    })
+    //Self
+    module.hot.dispose(function() {
+        element.parentNode.removeChild(element);
+      });
+    module.hot.accept();
+
+    //Dependencies 
+    module.hot.accept(
+        './print.js', 
+        function() {
+            console.log('Accepting the updated printMe module!');
+            element.parentNode.removeChild(element);
+            getComponent().then((component) => {
+                document.body.appendChild(component);
+            });
+        },
+        (err, {moduleId, dependencyId}) => {
+            console.log('Erreur : ', err, moduleId, dependencyId);
+        }
+    );
 }
 
 /* =====================================================

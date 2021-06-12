@@ -37,13 +37,11 @@ module.exports = (env, argv) => {
     return {
         //mode: env.production ? 'production' : 'development',
         mode: env.WEBPACK_SERVE ? 'development' : 'production',
-        entry: { 
-            index: './src/index.js'
-        },
+        entry: './src/index.js',
         devtool: 'inline-source-map',
         devServer: {
-          contentBase: './dist',
-         hot: true,
+            contentBase: './dist',
+            hotOnly: true,
         },
         plugins: [
             new HtmlWebpackPlugin({
@@ -56,7 +54,8 @@ module.exports = (env, argv) => {
             clean: true
         }, 
         optimization: {
-            moduleIds: 'deterministic',
+            //moduleIds: 'deterministic',
+            moduleIds: 'named',
             runtimeChunk: 'single', 
             splitChunks: {
                 cacheGroups: {
