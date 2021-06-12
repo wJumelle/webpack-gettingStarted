@@ -3,6 +3,7 @@
     Résulte en la création d'un seul fichier ./dist/main.js */
 
 import Print from './print';
+import './style.css';
 
 async function getComponent() {   
     element = document.createElement('div');

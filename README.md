@@ -600,6 +600,7 @@ Pour éviter de faire face à des oublies de déclaration de variable d'environn
 
 1. [**Activation du HMR**](#activation-du-hmr)
 2. [**Gotchas**](#gotchas)
+3. [**HMR with Stylesheets**](#hmr-with-stylesheets)
 
 Documentation : 
 1. [**Hot Module Replacement - Guides**](https://webpack.js.org/guides/hot-module-replacement/)
@@ -667,8 +668,8 @@ module.hot.accept(
 Afin de clarifier le code du warning nous pouvons changer la valeur de la propriété `optimization.moduleIds = 'named'` à la place de '*deterministic*'.
 Ainsi, nous n'avons plus l'ID du module dans le warning mais le fichier en cause du warning.
 
-[Suite du problème](https://blog.nativescript.org/deep-dive-into-hot-module-replacement-with-webpack-part-two-handling-updates/)  
-[Fonction module.hot.dispose()](https://www.javascriptstuff.com/webpack-hmr-tutorial/)
+[**Suite du problème**](https://blog.nativescript.org/deep-dive-into-hot-module-replacement-with-webpack-part-two-handling-updates/)  
+[**Fonction module.hot.dispose()**](https://www.javascriptstuff.com/webpack-hmr-tutorial/)
 
 On comprend donc qu'il faut utiliser la fonction `module.hot.accept` en mode **self** + gérer les dépendences pour le fichier *./src/index.js*. 
 
@@ -702,3 +703,28 @@ if (module.hot) {
     );
 }
 ``` 
+
+### HMR with Stylesheets
+
+La gestion du HMR avec les feuilles de styles est simplifié par l'usage de ce que l'on appelle des loaders : **css-loader** et **style-loader**.  
+Installons-les via la commande `npm install --save-dev style-loader css-loader`.
+
+Il faut maintenant configurer le fichier *./webpack.config.js* afin d'informer webpack de l'utilisation de ces deux loaders dans la gestion 
+des fichiers *.css.  
+Pour cela il suffit d'ajouter une règle de gestion : 
+
+```
+module: {
+    rules: [
+    {
+        test: /\.css$/,
+        use: ['style-loader', 'css-loader'],
+    },
+    ],
+},
+```
+
+Les loaders s'écrivent de la droite vers la gauche, d'abord nous utiliserons donc le loader **css-loader**, qui traitera le contenu CSS, puis 
+le contenu sera alors de nous traité par le loader **style-loader**.  
+
+Il ne nous reste plus qu'à créer un fichier *./src/style.css* et à l'importer dans le fichier *./src/index.js* (`import './styles.css'`);
