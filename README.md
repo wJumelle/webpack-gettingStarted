@@ -643,9 +643,9 @@ Nous savons que le fichier *./src/print.js* sert de base à l'export de la fonct
 Seulement, lorsque nous cliquons sur cet élément du DOM nous voyons que celui-ci exécute toujours l'ancienne fonction print().  
 Cela se produit tout simplement car le gestionnaire d'événement de l'élément du DOM est toujours lié à l'ancienne fonction print().
 
-❗ A ce niveau du guide je fais face à un problème assez particulier, lorsque je rafraîchis le fichier ./src/print.js, aucun problème. La console m'indique la
+> ❗ A ce niveau du guide je fais face à un problème assez particulier, lorsque je rafraîchis le fichier ./src/print.js, aucun problème. La console m'indique la
 mise à jours correctement.  
-Seulement, lorsque je mets à jours le fichier ./src/index.js, cela m'affiche un warning dans la console "*\[HMR\] Error: Aborted because 138 is not accepted*" et lance
+> Seulement, lorsque je mets à jours le fichier ./src/index.js, cela m'affiche un warning dans la console "*\[HMR\] Error: Aborted because 138 is not accepted*" et lance
 un reload complet de l'app.  
 
 Pour isoler ce problème et stopper le rafraîchissement il est possible d'indiquer à webpack de ne pas reload l'app en modifiant le paramètre `hot: true` en 
@@ -667,7 +667,7 @@ module.hot.accept(
 Afin de clarifier le code du warning nous pouvons changer la valeur de la propriété `optimization.moduleIds = 'named'` à la place de '*deterministic*'.
 Ainsi, nous n'avons plus l'ID du module dans le warning mais le fichier en cause du warning.
 
-[Suite du problème](https://blog.nativescript.org/deep-dive-into-hot-module-replacement-with-webpack-part-two-handling-updates/)
+[Suite du problème](https://blog.nativescript.org/deep-dive-into-hot-module-replacement-with-webpack-part-two-handling-updates/)  
 [Fonction module.hot.dispose()](https://www.javascriptstuff.com/webpack-hmr-tutorial/)
 
 On comprend donc qu'il faut utiliser la fonction `module.hot.accept` en mode **self** + gérer les dépendences pour le fichier *./src/index.js*. 
