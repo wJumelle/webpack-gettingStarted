@@ -2,15 +2,17 @@
     Méthode avec async + import basique du module print.js 
     Résulte en la création d'un seul fichier ./dist/main.js */
 
-import Print from './print';
 import './style.css';
+import { cube } from './math.js';
 
 async function getComponent() {   
-    element = document.createElement('div');
-    const { default: _ } = await import('lodash');
+    element = document.createElement('pre');
 
-    element.innerHTML = _.join(['Hello', 'webpack', 'Hot Module Replacement'], ' ');
-    element.onclick = Print.bind(null, 'Click HMR');
+    element.innerHTML = [
+        'Hello webpack !',
+        '5 cubed is equal to ' + cube(5),
+        'It is working ?'
+    ].join('\n\n');
 
     return element;
 }
@@ -26,41 +28,22 @@ getComponent().then((component) => {
 if (module.hot) {
     //Self
     module.hot.dispose(function() {
-        element.parentNode.removeChild(element);
+        if(element) { element.parentNode.removeChild(element) };
       });
     module.hot.accept();
 
     //Dependencies 
     module.hot.accept(
-        './print.js', 
+        './math.js', 
         function() {
-            console.log('Accepting the updated printMe module!');
-            element.parentNode.removeChild(element);
+            console.info('Update Math.js');
+            if(element) { element.parentNode.removeChild(element) };
             getComponent().then((component) => {
                 document.body.appendChild(component);
             });
         },
         (err, {moduleId, dependencyId}) => {
-            console.log('Erreur : ', err, moduleId, dependencyId);
+            console.error('Erreur : ', err, moduleId, dependencyId);
         }
     );
 }
-
-/* =====================================================
-    Méthode avec async + import dynamique
-    Résulte en la création de deux fichiers distincts */
-
-// async function getComponent() {   
-//     const element = document.createElement('div');
-//     const { default: _ } = await import('lodash');
-//     const { default: Print } = await import('./print.js');
-
-//     element.innerHTML = _.join(['Hello', 'webpack', 'Hot Module Replacement'], ' ');
-//     element.onclick = Print.bind(null, 'Click HMR!');
-
-//     return element;
-// }
-
-// getComponent().then((component) => {
-//     document.body.appendChild(component);
-// });

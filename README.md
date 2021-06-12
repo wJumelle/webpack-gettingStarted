@@ -747,3 +747,29 @@ La version 2 de webpack arrivait avec un support intégré (built-in support) du
 La version 4 de webpack a étendu cette capacité en fournissant au compilateur des indices via la propriété "**sideEffects**" du fichier *./package.json*.  
 Cette nouvelle propriété permet d'indiquer au compilateur quels fichiers sont "purs" et donc que le compilateur peut supprimer du process de 
 compilation si il détecte qu'ils ne sont pas utilisés.  
+
+### Add a Utility
+
+Nous allons légèrement modifié les fichiers en présence dans le projet : 
+1. suppression du fichier *./src/print.js*
+2. suppression de l'import de lodash dans le fichier *./src/index.js*
+3. ajout du fichier *./src/math.js* 
+4. ajout de la propriété `optimization.usedExports:true` dans le fichier *./webpack.config.js* 
+
+> A ce stade du chapitre Tree Shaking, la fonctionalité ne semblait pas fonctionner correctement.  
+> L'export de la fonction non-utilisé square se faitait dans la console alors qu'en apparence elle n'aurait pas dû.  
+
+Dans le fichier *./src/index.js*, nous n'importons uniquement que la fonction **cube** du module *./src/math.js*.  
+Ce qui devrait avoir pour effet, dans le fichier compilé *./dist/main.js* de laisser apparaître ce genre de code : 
+
+``` 
+/* unused harmony export square */
+/* harmony export (immutable) */ __webpack_exports__['a'] = cube;
+```
+
+Ce n'est pas le cas dans la console (devTools de Chrome), ce que je pensais.  
+Seulement, lorsque l'on fait un `npm run build` et que l'on génère le fichier *./dist/main.\[hash\].js* on peut observer le comportement 
+que l'on a montré ci-dessus.
+
+Cependant, nous pouvons observer dans ce fichier généré que la fonction *square()* n'est pas importé mais pourtant incluse dans le bundle.  
+Ceci va être corrigé dans les parties suivantes. 

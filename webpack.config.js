@@ -1,42 +1,11 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
-/* Ancienne méthode, sans prendre en considération les variables d'environnement permettant de passer de l'état de development à production facilement
-module.exports = {
-    mode: 'development',
-    entry: './src/index.js',
-    plugins: [
-      new HtmlWebpackPlugin({
-        title: 'Caching',
-      }),
-    ],
-    output: {
-        filename: '[name].[contenthash].js',
-        path: path.resolve(__dirname, 'dist'),
-        clean: true
-    }, 
-    optimization: {
-      moduleIds: 'deterministic',
-      runtimeChunk: 'single', 
-      splitChunks: {
-          cacheGroups: {
-              vendor: {
-                  test: /[\\/]node_modules[\\/]/,
-                  name: 'vendors',
-                  chunks: 'all'
-              }
-          }
-      }
-    }
-};*/
-
 module.exports = (env, argv) => {
-    console.log('ENV: ', env);
-    console.log('ARGV: ', argv);
-
     return {
         //mode: env.production ? 'production' : 'development',
-        mode: env.WEBPACK_SERVE ? 'development' : 'production',
+        //mode: env.WEBPACK_SERVE ? 'development' : 'production',
+        mode: 'development',
         entry: './src/index.js',
         devtool: 'inline-source-map',
         devServer: {
@@ -53,7 +22,7 @@ module.exports = (env, argv) => {
         },
         plugins: [
             new HtmlWebpackPlugin({
-                title: 'Hot Module Replacement',
+                title: 'Tree Shaking',
             }),
         ],
         output: {
@@ -64,6 +33,7 @@ module.exports = (env, argv) => {
         optimization: {
             //moduleIds: 'deterministic',
             moduleIds: 'named',
+            usedExports: true,
             runtimeChunk: 'single', 
             splitChunks: {
                 cacheGroups: {
