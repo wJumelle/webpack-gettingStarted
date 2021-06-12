@@ -15,6 +15,7 @@ Sommaire :
 9. [Authoring Librairies](#authoring-librairies)
 10. [Environment variables](#environment-variables)
 11. [Hot Module Replacement](#hot-module-replacement)
+12. [Tree Shaking](#tree-shaking)
 
 ## Best Practises 
 
@@ -732,3 +733,17 @@ Il ne nous reste plus qu'à créer un fichier *./src/style.css* et à l'importer
 ### Other Code and Frameworks
 
 [**Lien vers le paragraphe sur les loaders React, Vue... disponibles**](https://webpack.js.org/guides/hot-module-replacement/#other-code-and-frameworks)
+
+## Tree Shaking
+
+[**Définition MDN du Tree Shaking**](https://developer.mozilla.org/fr/docs/Glossary/Tree_shaking)
+
+1. [**Add a Utility**](#add-a-utility)
+
+Le principe de Tree Shaking est simple : détection du code / des modules non utilisés et suppression de ce code lors du bundling par webpack.  
+En ES6, cela repose sur les états import et export entre fichiers JS.  
+
+La version 2 de webpack arrivait avec un support intégré (built-in support) du tree shaking (détection de la non-utilisation de modules exportés).  
+La version 4 de webpack a étendu cette capacité en fournissant au compilateur des indices via la propriété "**sideEffects**" du fichier *./package.json*.  
+Cette nouvelle propriété permet d'indiquer au compilateur quels fichiers sont "purs" et donc que le compilateur peut supprimer du process de 
+compilation si il détecte qu'ils ne sont pas utilisés.  
