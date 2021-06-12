@@ -742,6 +742,7 @@ Il ne nous reste plus qu'à créer un fichier *./src/style.css* et à l'importer
 1. [**Add a Utility**](#add-a-utility)
 2. [**Mark the file as side-effect-free**](#mark-the-file-as-side-effect-free)
 3. [**Clarifying tree shaking and sideEffects**](#clarifying-tree-shaking-and-sideeffects)
+4. [**Minify the Output**](#minify-the-output)
 
 Le principe de Tree Shaking est simple : détection du code / des modules non utilisés et suppression de ce code lors du bundling par webpack.  
 En ES6, cela repose sur les états import et export entre fichiers JS.  
@@ -820,3 +821,9 @@ En effet, de par l'aspect dynamique du code JavaScript il est très dur pour Ter
 aura des effets secondaires ou non.  
 Pour cela, nous pouvons l'aider à l'aide de l'annotation `/*#\__PURE\__*/` qui déclare (*flag*) une déclaration (de fonction) comme étant sans effets-
 secondaires. 
+
+### Minify the Output
+
+Maintenant que nous avons préparé (*cued up*) notre "code mort" a être abandonné grâce à l'utilisation de la syntax import / export, nous devons encore 
+le supprimer du bundle.  
+Nous passons alors la ligne de configuration `mode: production` à l'intérieur du fichier *./webpack.config.js*.

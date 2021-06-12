@@ -10,7 +10,7 @@ async function getComponent() {
 
     element.innerHTML = [
         'Hello webpack !',
-        '5 cubed is equal to ' + cube(5),
+        '5 cubed is equal to ' + cube(35),
         'It is working ?'
     ].join('\n\n');
 

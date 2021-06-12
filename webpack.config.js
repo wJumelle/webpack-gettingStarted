@@ -5,7 +5,7 @@ module.exports = (env, argv) => {
     return {
         //mode: env.production ? 'production' : 'development',
         //mode: env.WEBPACK_SERVE ? 'development' : 'production',
-        mode: 'development',
+        mode: 'production',
         entry: './src/index.js',
         devtool: 'inline-source-map',
         devServer: {
