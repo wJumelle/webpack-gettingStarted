@@ -773,3 +773,33 @@ que l'on a montré ci-dessus.
 
 Cependant, nous pouvons observer dans ce fichier généré que la fonction *square()* n'est pas importé mais pourtant incluse dans le bundle.  
 Ceci va être corrigé dans les parties suivantes. 
+
+### Mark the file as side-effect free
+
+Dans un monde 100% compatibile avec ES6, l'identification des effets secondaires (*side-effect*) est simple. Seulement, comme nous n'en 
+sommes pas encore là, il est nécessaire de fournir des indices aux compilateur de webpack sur la "pureté" du code. 
+
+Nous pouvons le faire en ajoutant une nouvelle propriété à notre fichier *./package.json*, la propriété **sideEffects**. 
+
+Si notre code d'application ne contient aucun effet secondaire, il nous est alors possible de fournir la valeur **false** à la propriété 
+afin d'indiquer à webpack qu'il peut, de manière totalement sûre, supprimer les bouts de codes non-utilisés.
+
+```
+{
+    name: 'webpack-guides', 
+    sideEffects: false,
+    [...]
+}
+```
+
+> 💡 Est considéré comme "side-effect" un code qui possède un comportement spécial lorsque celui-ci est importé, autre que d'exposer une 
+ou plusieurs importations.  
+> Les polyfill, par exemple, affectent la portée globale d'un code (*global scope*) et ne fournissent généralement par d'importation. 
+
+Si jamais certains de vos bouts de code / modules comporte des effets secondaires, il suffit de remplacer la valeur **false** par un 
+array `"sideEffects": ["./src/some-side-effectful-file.js"]`.  
+Cette propriété accepte les modèles glob simple (*simple glob patterns*) en entrée pointant ainsi vers les fichiers jugés pertinents. 
+L'utilisation de [**glob-to-regexp**](https://github.com/fitzgen/glob-to-regexp) permet donc le support de ce genre de chaîne de caractère 
+"***.css**" pour cibler l'intégralité des fichiers CSS de toute l'arborescence du projet. (Supports: *, **, {a,b}, \[a-z\])
+
+Pour finir sur la propriété "sideEffects", elle peut aussi être configurer à l'aide des options [**module.rules**](https://webpack.js.org/configuration/module/#rulesideeffects).

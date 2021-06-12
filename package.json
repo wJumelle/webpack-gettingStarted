@@ -1,5 +1,6 @@
 {
   "name": "webpack-guides",
+  "sideEffects": false,
   "version": "1.0.0",
   "description": "Starter project with Webpack 5",
   "private": true,
