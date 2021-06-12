@@ -736,9 +736,12 @@ Il ne nous reste plus qu'à créer un fichier *./src/style.css* et à l'importer
 
 ## Tree Shaking
 
+[**Documentation**](https://webpack.js.org/guides/tree-shaking/)  
 [**Définition MDN du Tree Shaking**](https://developer.mozilla.org/fr/docs/Glossary/Tree_shaking)
 
 1. [**Add a Utility**](#add-a-utility)
+2. [**Mark the file as side-effect-free**](#mark-the-file-as-side-effect-free)
+3. [**Clarifying tree shaking and sideEffects**](#clarifying-tree-shaking-and-sideeffects)
 
 Le principe de Tree Shaking est simple : détection du code / des modules non utilisés et suppression de ce code lors du bundling par webpack.  
 En ES6, cela repose sur les états import et export entre fichiers JS.  
@@ -774,7 +777,7 @@ que l'on a montré ci-dessus.
 Cependant, nous pouvons observer dans ce fichier généré que la fonction *square()* n'est pas importé mais pourtant incluse dans le bundle.  
 Ceci va être corrigé dans les parties suivantes. 
 
-### Mark the file as side-effect free
+### Mark the file as side-effect-free
 
 Dans un monde 100% compatibile avec ES6, l'identification des effets secondaires (*side-effect*) est simple. Seulement, comme nous n'en 
 sommes pas encore là, il est nécessaire de fournir des indices aux compilateur de webpack sur la "pureté" du code. 
@@ -803,3 +806,17 @@ L'utilisation de [**glob-to-regexp**](https://github.com/fitzgen/glob-to-regexp)
 "***.css**" pour cibler l'intégralité des fichiers CSS de toute l'arborescence du projet. (Supports: *, **, {a,b}, \[a-z\])
 
 Pour finir sur la propriété "sideEffects", elle peut aussi être configurer à l'aide des options [**module.rules**](https://webpack.js.org/configuration/module/#rulesideeffects).
+
+### Clarifying tree shaking and sideEffects
+
+Les optimisations [**sideEffects**](https://webpack.js.org/configuration/optimization/#optimizationsideeffects) et [**usedExports**](https://webpack.js.org/configuration/optimization/#optimizationusedexports) (aussi connu sous le nom de tree shaking), sont deux choses bien différentes.  
+
+1. **sideEffects** est bien plus efficace puisqu'elle permet de sauter des modules / fichiers entiers, ainsi que leurs sous-fichiers / dépendences (*subtree*).  
+2. **usedExports** s'appuie sur [**Terser**](https://github.com/terser-js/terser) pour détecter les effets secondaires à l'intérieur des fichiers 
+à l'aide des instructions (commentaires). Il s'agit d'une tâche complexe par rapport à la simple déclaration de la propriété **sideEffects**. Elle 
+ne peut pas non plus sauter les sous-fichiers / dépendences puisqu'il est défini dans les specs que les effets secondaires doivent tous être évalués. 
+
+En effet, de par l'aspect dynamique du code JavaScript il est très dur pour Terser de parfois jauger si la suppression d'un bout de code 
+aura des effets secondaires ou non.  
+Pour cela, nous pouvons l'aider à l'aide de l'annotation `/*#\__PURE\__*/` qui déclare (*flag*) une déclaration (de fonction) comme étant sans effets-
+secondaires. 
