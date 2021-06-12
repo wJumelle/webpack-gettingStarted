@@ -728,3 +728,7 @@ Les loaders s'écrivent de la droite vers la gauche, d'abord nous utiliserons do
 le contenu sera alors de nous traité par le loader **style-loader**.  
 
 Il ne nous reste plus qu'à créer un fichier *./src/style.css* et à l'importer dans le fichier *./src/index.js* (`import './styles.css'`);
+
+### Other Code and Frameworks
+
+[**Lien vers le paragraphe sur les loaders React, Vue... disponibles**](https://webpack.js.org/guides/hot-module-replacement/#other-code-and-frameworks)
