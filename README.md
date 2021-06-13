@@ -16,6 +16,7 @@ Sommaire :
 10. [Environment variables](#environment-variables)
 11. [Hot Module Replacement](#hot-module-replacement)
 12. [Tree Shaking](#tree-shaking)
+13. [Production](#production)
 
 ## Best Practises 
 
@@ -869,3 +870,25 @@ En résumé ce qu'il faut retenir pour tirer avantages du tree shaking :
 2. s'assurer qu'aucun compilateur (ex: @babel/preset-env) ne transforme la syntaxe des modules ES6 en module CommonJS ([**documentation**](https://babeljs.io/docs/en/babel-preset-env#modules))
 3. ajouter la propriété "**sideEffects**" au fichier *./packaga.json*
 4. utiliser le mode **production** afin de pouvoir profiter facilement des différentes méthodes d'optimisations (minification + tree shaking)
+
+## Production
+
+1. [**Production setup**](#production-setup)
+
+Dans ce chapitre nous allons quelques best practices et des utilitaires afin de produire des sites et applications. 
+
+### Production setup
+
+Le but des builds en **development** ou en **production** diffèrent énormément.  
+En **development** nous voulons un mappage des fichiers sources robuste (*source-mapping*) et un serveur local avec une technologie permettant le rafraîchissement 
+instantannée de l'affichage (live reloading ou HMR).  
+En **production**, notre but est de se concentrer sur des lots minifiés, des mappages des fichiers sources plus légers et des éléments (*assets*) optimisés afin 
+d'améliorer le temps de chargement. 
+De ce fait, il est extrémement recommandé d'avoir des fichiers de configuration séparés, un par mode et un commun.  
+
+Afin de fusionner ces fichiers de configurations ensemble, nous allons utiliser un nouveau module **webpack-merge**.  
+Avec un fichier de configuration commun, nous n'aurons pas à dupliquer le code entre les fichiers de development et de production. 
+
+```
+npm install --save-dev webpack-merge
+```
