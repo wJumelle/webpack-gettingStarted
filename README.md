@@ -874,6 +874,7 @@ En résumé ce qu'il faut retenir pour tirer avantages du tree shaking :
 ## Production
 
 1. [**Production setup**](#production-setup)
+2. [**NPM Scripts**](#npm-scripts)
 
 Dans ce chapitre nous allons quelques best practices et des utilitaires afin de produire des sites et applications. 
 
@@ -900,3 +901,10 @@ Nous allons donc créer 3 fichiers :
 
 Nous constatons au débuts des deux fichiers *./webpack.dev.js* et *./webpack.prod.js* l'utilisation de **merge()** afin de fusionner les fichiers avec le 
 fichier commun. 
+
+### NPM Scripts
+
+Il nous faut maintenant modifier les npm scripts du fichier *./packaga.json* afin de cibler les bons fichiers de configuration webpack en fonction 
+de la commande appelée :
+1. `npm run start` appelera ainsi la ligne de commande suivante `webpack serve --open --config webpack.dev.js`
+2. `npm run build` appelera ainsi la ligne de commande suivante `webpack --config webpack.prod.js`

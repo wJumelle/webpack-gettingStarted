@@ -3,5 +3,5 @@ export function square(x) {
 }
 
 export function cube(x) {
-    return x * x * x;
+    return x * x * x + 15;
 }

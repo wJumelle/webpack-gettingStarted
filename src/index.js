@@ -2,7 +2,6 @@
     Méthode avec async + import basique du module print.js 
     Résulte en la création d'un seul fichier ./dist/main.js */
 
-import './style.css';
 import { cube } from './math.js';
 
 async function getComponent() {   
@@ -10,7 +9,7 @@ async function getComponent() {
 
     element.innerHTML = [
         'Hello webpack !',
-        '5 cubed is equal to ' + cube(35),
+        '5 cubed is equal to SUPRISE MUTHER : ' + cube(35),
         'It is working ?'
     ].join('\n\n');
 
@@ -36,7 +35,7 @@ if (module.hot) {
     module.hot.accept(
         './math.js', 
         function() {
-            console.info('Update Math.js');
+            console.log('%c🚀 Update Math.js', "font-weight: bold;");
             if(element) { element.parentNode.removeChild(element) };
             getComponent().then((component) => {
                 document.body.appendChild(component);
