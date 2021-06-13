@@ -743,6 +743,7 @@ Il ne nous reste plus qu'à créer un fichier *./src/style.css* et à l'importer
 2. [**Mark the file as side-effect-free**](#mark-the-file-as-side-effect-free)
 3. [**Clarifying tree shaking and sideEffects**](#clarifying-tree-shaking-and-sideeffects)
 4. [**Minify the Output**](#minify-the-output)
+5. [**Tree Shaking Conclusion**](#tree-shaking-conclusion)
 
 Le principe de Tree Shaking est simple : détection du code / des modules non utilisés et suppression de ce code lors du bundling par webpack.  
 En ES6, cela repose sur les états import et export entre fichiers JS.  
@@ -860,3 +861,11 @@ Ici, nous sommes dans le cas de figure d'un projet léger, donc c'est peu visibl
 
 > 💡 Comme dit plus haut, pour faire fonctionner le tree shaking il est obligatoire de configurer le module [**ModuleConcatenationPlugin**](https://webpack.js.org/plugins/module-concatenation-plugin/). Ce module est ajouté de manière automatique par webpack lorsque l'on utilise le `mode: 'production'`.  
 > Si le mode production n'est pas activé alors il faut paramétrer le module séparément pour que webpack puisse activer le tree shaking.
+
+### Tree Shaking Conclusion
+
+En résumé ce qu'il faut retenir pour tirer avantages du tree shaking : 
+1. utiliser la syntaxe des modules ES6 (import / export)
+2. s'assurer qu'aucun compilateur (ex: @babel/preset-env) ne transforme la syntaxe des modules ES6 en module CommonJS ([**documentation**](https://babeljs.io/docs/en/babel-preset-env#modules))
+3. ajouter la propriété "**sideEffects**" au fichier *./packaga.json*
+4. utiliser le mode **production** afin de pouvoir profiter facilement des différentes méthodes d'optimisations (minification + tree shaking)
