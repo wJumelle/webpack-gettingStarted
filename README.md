@@ -826,4 +826,37 @@ secondaires.
 
 Maintenant que nous avons préparé (*cued up*) notre "code mort" a être abandonné grâce à l'utilisation de la syntax import / export, nous devons encore 
 le supprimer du bundle.  
-Nous passons alors la ligne de configuration `mode: production` à l'intérieur du fichier *./webpack.config.js*.
+Nous devons alors réaliser plusieurs changements à l'intérieur du fichier *./webpack.config.js* :
+1. changement de la propriété  `mode: development` en `mode: production`,
+2. ajout de la propriété `concatenateModules: false` afin d'éviter la concaténation du code du bundle lors de l'export  
+
+Pourquoi la seconde étape ? Tout simplement car sans celle-ci webpack concatène par défaut le code généré et donc il n'était pas possible d'observer 
+le résultat de ce que nous avions voulu obtenir au-dessus, à savoir la suppression du code de la fonction *square()* et la sauvegarde du code de 
+la fonction *cube()*. 
+En phase de production, il est cependant préférable d'enlever cette propriété afin d'obtenir un code encore plus optimisé. 
+
+Lorsque la configuration est en place, nous pouvons réaliser un nouveau `npm run build` et aller observer le résultat suivant dans le fichier 
+*./dist/main.\[hash\].js* : 
+
+```
+./src/math.js": (e, s, n) => {
+    "use strict";
+
+    function t(e) {
+        return e * e * e
+    }
+    n.d(s, {
+        k: () => t
+    })
+}
+```
+
+On observe donc la présence de la version tronquée (*mangled version*) de la fonction *cube()* `function t(e) { return e*e*e }`.  
+Si on enlève la propriété `concatenateModules` tout le code de math.js n'aurait pas été présent et aurait été remplacé en dur par les valeurs à 
+afficher.  
+
+Avec la minification et le tree shaking notre bundle possède une taille légèrement inférieur à la version non traitée.  
+Ici, nous sommes dans le cas de figure d'un projet léger, donc c'est peu visible, mais dans de gros projets la différence est plus perceptible.
+
+> 💡 Comme dit plus haut, pour faire fonctionner le tree shaking il est obligatoire de configurer le module [**ModuleConcatenationPlugin**](https://webpack.js.org/plugins/module-concatenation-plugin/). Ce module est ajouté de manière automatique par webpack lorsque l'on utilise le `mode: 'production'`.  
+> Si le mode production n'est pas activé alors il faut paramétrer le module séparément pour que webpack puisse activer le tree shaking.
