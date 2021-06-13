@@ -892,3 +892,11 @@ Avec un fichier de configuration commun, nous n'aurons pas à dupliquer le code 
 ```
 npm install --save-dev webpack-merge
 ```
+
+Nous allons donc créer 3 fichiers : 
+1. *./webpack.common.js* qui contient les propriétes communes aux différents modes
+2. *./webpack.dev.js* qui contient les propriétées liées à l'env de dév : source-map + configurations de webpack-dev-server
+3. *./webpack.prod.js* qui chargera le plugin [**Terser**](https://webpack.js.org/plugins/terser-webpack-plugin/) via la déclaration du mode en production
+
+Nous constatons au débuts des deux fichiers *./webpack.dev.js* et *./webpack.prod.js* l'utilisation de **merge()** afin de fusionner les fichiers avec le 
+fichier commun. 

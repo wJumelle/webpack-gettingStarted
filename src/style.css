@@ -1,7 +1,0 @@
-:root {
-    --clr-primary: hsl(0, 100%, 50%);
-}
-
-body { 
-    color: var(--clr-primary);
-}
