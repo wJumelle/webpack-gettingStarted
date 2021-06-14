@@ -877,6 +877,7 @@ En résumé ce qu'il faut retenir pour tirer avantages du tree shaking :
 2. [**NPM Scripts**](#npm-scripts)
 3. [**Specify the Mode**](#specify-the-mode)
 4. [**Minification**](#minification)
+5. [**Source mapping**](#source-mapping)
 
 Dans ce chapitre nous allons quelques best practices et des utilitaires afin de produire des sites et applications. 
 
@@ -937,3 +938,15 @@ Depuis webpack v4, la variable **process.env.NODE_ENV** est définit automatique
  Cette minification est réalisée par le plugin [**Terser**}(https://webpack.js.org/plugins/terser-webpack-plugin/).
  Terser est utilisé par défault mais il est possible d'utiliser un autre plugin pour se charger de cela, seulement il est recommandé de veiller 
  à ce que le plugin se charge bien d'effectuer toutes les tâches nécessaires à l'optimisation du code en production (voir [**tree shaking**](#tree-shaking))
+
+### Source mapping
+
+Il est fortement recommandé d'utiliser des sources maps que ce soit en **production** ou en **development**, cela permet de débug mais aussi 
+de réaliser de véritables tests de performances entre les builds.  
+Il est cependant recommandé de choisir la valeur approprié à la propriété [**devtool**](https://webpack.js.org/configuration/devtool/).  
+
+Ainsi, pour la version en production, nous choisirons une option qui permettra de réaliser des builds rapides (**source-map**) alors que pour la version en 
+development, nous nous permettrons d'opter pour une option plus gourmande (**inline-source-map**). 
+
+> 💡 De manière général il faut éviter toutes les options commençant par **inline-** ou **eval-** en production qui pourrait accroître énormément 
+la taille du bundle en sortie. 

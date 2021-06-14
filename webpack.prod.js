@@ -3,6 +3,7 @@ const common = require('./webpack.common.js');
 
 module.exports = merge(common, {
   mode: 'production',
+  devtool: 'source-map',
   optimization: {
     //moduleIds permet d'avoir soit l'id du module avec 'deterministic' soit le nom du fichier concerné avec 'named'
     //moduleIds: 'deterministic',
