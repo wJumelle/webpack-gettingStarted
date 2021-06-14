@@ -876,6 +876,7 @@ En résumé ce qu'il faut retenir pour tirer avantages du tree shaking :
 1. [**Production setup**](#production-setup)
 2. [**NPM Scripts**](#npm-scripts)
 3. [**Specify the Mode**](#specify-the-mode)
+4. [**Minification**](#minification)
 
 Dans ce chapitre nous allons quelques best practices et des utilitaires afin de produire des sites et applications. 
 
@@ -929,3 +930,10 @@ Depuis webpack v4, la variable **process.env.NODE_ENV** est définit automatique
 > au script NPM. Petit rappel de comment fonctionne les [**variables d'environnement**](#environment-variables).  
 > Si l'on veut pouvoir accéder à la variable d'environnement lors de la phase de production il faudrait donc écrire le script "**build**" de la façon
 > suivante `"build": "webpack --node-env production --config webpack.prod.js"`.
+
+ ### Minification
+
+ Depuis webpack v4 la minification est effectuée automatiquement lorsque le mode **production** est choisie.  
+ Cette minification est réalisée par le plugin [**Terser**}(https://webpack.js.org/plugins/terser-webpack-plugin/).
+ Terser est utilisé par défault mais il est possible d'utiliser un autre plugin pour se charger de cela, seulement il est recommandé de veiller 
+ à ce que le plugin se charge bien d'effectuer toutes les tâches nécessaires à l'optimisation du code en production (voir [**tree shaking**](#tree-shaking))
