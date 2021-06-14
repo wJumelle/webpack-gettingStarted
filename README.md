@@ -878,6 +878,8 @@ En résumé ce qu'il faut retenir pour tirer avantages du tree shaking :
 3. [**Specify the Mode**](#specify-the-mode)
 4. [**Minification**](#minification)
 5. [**Source mapping**](#source-mapping)
+6. [**Minimize CSS**](#minimize-css)
+7. [**CLI Alternatives**](#cli-alternatives)
 
 Dans ce chapitre nous allons quelques best practices et des utilitaires afin de produire des sites et applications. 
 
@@ -950,3 +952,18 @@ development, nous nous permettrons d'opter pour une option plus gourmande (**inl
 
 > 💡 De manière général il faut éviter toutes les options commençant par **inline-** ou **eval-** en production qui pourrait accroître énormément 
 la taille du bundle en sortie. 
+
+### Minimize CSS
+
+En production il est impératif de minimisé ses fichiers CSS. 
+Pour cela il existe un chapitre entier sur [**comment minifier pour la production**](https://webpack.js.org/plugins/mini-css-extract-plugin/#minimizing-for-production). 
+
+### CLI Alternatives
+
+Toutes les propriétés vue au-dessus peuvent, pour la plus part, être indiquée lors de l'appel d'une commande.  
+Par exemple, la propriété **mode** peut être définie lors de l'appel au script `"webpack --mode production --config webpack.prod.js"`. 
+
+> 💡 Il est possible de voir tous les arguments passable en ligne de commande via la commande suivante `npx webpack --help=verbose` (c'est très long)
+
+Même si c'est possible de le faire, il est toutefois recommandé par webpack de réaliser ce genre de configuration au sein des fichier de configuration afin 
+d'ajouter de la flexibilité au code. 
