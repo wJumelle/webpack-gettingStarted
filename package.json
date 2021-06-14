@@ -6,8 +6,8 @@
   "private": true,
   "scripts": {
     "watch": "webpack --watch",
-    "build": "webpack --config webpack.prod.js",
-    "start": "webpack serve --open --config webpack.dev.js"
+    "build": "webpack --node-env production --config webpack.prod.js",
+    "start": "webpack serve --open --node-env development --config webpack.dev.js"
   },
   "repository": {
     "type": "git",

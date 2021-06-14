@@ -875,6 +875,7 @@ En résumé ce qu'il faut retenir pour tirer avantages du tree shaking :
 
 1. [**Production setup**](#production-setup)
 2. [**NPM Scripts**](#npm-scripts)
+3. [**Specify the Mode**](#specify-the-mode)
 
 Dans ce chapitre nous allons quelques best practices et des utilitaires afin de produire des sites et applications. 
 
@@ -908,3 +909,23 @@ Il nous faut maintenant modifier les npm scripts du fichier *./packaga.json* afi
 de la commande appelée :
 1. `npm run start` appelera ainsi la ligne de commande suivante `webpack serve --open --config webpack.dev.js`
 2. `npm run build` appelera ainsi la ligne de commande suivante `webpack --config webpack.prod.js`
+
+### Specify the Mode
+
+Beaucoup de bilbiothèques (*librairies*) utilises la variable d'environnement **process.env.NODE_ENV** afin de déterminer ce qui doit être intégré 
+ou non à la bibliothèque.  
+Lorsque la variable **process.env.NODE_ENV** n'est pas égale à **production** certaines librairies ajoutent des lignes de logs et des phases de tests 
+pour rendre le débuggage plus simple. 
+Au contraire, avec la variable définit en **production** il se pourrait que les libraires suppriment ou ajoutent des parties assez importantes de code
+afin d'optimiser la façon dont le site / app fonctionne pour l'utilisateur final.  
+
+Depuis webpack v4, la variable **process.env.NODE_ENV** est définit automatiquement lors du paramétrage de la propriété **module.exports.mode**.
+
+> ❗ Il faut cependant faire attention et nuancer les propos du guide. La varialbe **process.env.NODE_ENV** est initialisée lors de la compilation.  
+> Elle n'est donc pas accessible dans les fichiers de configuration ! On peut cependant très bien réaliser un *console.log(process.env.NODE_ENV)* à 
+> l'intérieur des fichiers *./src/index.js* afin de visualiser la valeur de la variable d'environnement. 
+
+> 💡 Pour faire en sorte que la variable soit accessible au sein des fichiers de configuration, il faudrait initialiser la variable lors de l'appel 
+> au script NPM. Petit rappel de comment fonctionne les [**variables d'environnement**](#environment-variables).  
+> Si l'on veut pouvoir accéder à la variable d'environnement lors de la phase de production il faudrait donc écrire le script "**build**" de la façon
+> suivante `"build": "webpack --node-env production --config webpack.prod.js"`.
