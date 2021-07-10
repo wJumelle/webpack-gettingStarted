@@ -1,50 +1,24 @@
-/* ======================================================== 
-    Méthode avec async + import basique du module print.js 
-    Résulte en la création d'un seul fichier ./dist/main.js */
+import _ from 'lodash';
 
-import { cube } from './math.js';
+function component() {
+    const element = document.createElement('div');
+    const button = document.createElement('button');
+    const br = document.createElement('br');
 
-console.log('process.env.NODE_ENV', process.env.NODE_ENV);
+    button.innerHTML = 'Click me and look at the console!';
+    element.innerHTML = _.join(['Hello', 'webpack'], ' ');
+    element.appendChild(br);
+    element.appendChild(button);
 
-async function getComponent() {   
-    element = document.createElement('pre');
+    // Note that because a network request is involved, some indication
+    // of loading would need to be shown in a production-level site/app.
+    button.onclick = e => import(/* webpackChunkName: "print" */ './print').then(module => {
+        const print = module.default;
 
-    element.innerHTML = [
-        'Hello webpack !',
-        '5 cubed is equal to SUPRISE MUTHER : ' + cube(35),
-        'It is working ?'
-    ].join('\n\n');
+        print();
+    });
 
     return element;
 }
 
-let element;
-
-getComponent().then((component) => {
-    document.body.appendChild(component);
-});
-
-
-/* Ecoute de la màj des fichiers afin de remplacer le contenu dynamiquement */
-if (module.hot) {
-    //Self
-    module.hot.dispose(function() {
-        if(element) { element.parentNode.removeChild(element) };
-      });
-    module.hot.accept();
-
-    //Dependencies 
-    module.hot.accept(
-        './math.js', 
-        function() {
-            console.log('%c🚀 Update Math.js', "font-weight: bold;");
-            if(element) { element.parentNode.removeChild(element) };
-            getComponent().then((component) => {
-                document.body.appendChild(component);
-            });
-        },
-        (err, {moduleId, dependencyId}) => {
-            console.error('Erreur : ', err, moduleId, dependencyId);
-        }
-    );
-}
+document.body.appendChild(component());

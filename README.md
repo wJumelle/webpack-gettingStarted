@@ -17,6 +17,7 @@ Sommaire :
 11. [Hot Module Replacement](#hot-module-replacement)
 12. [Tree Shaking](#tree-shaking)
 13. [Production](#production)
+14. [Lazy Loading](#lazy-loading)
 
 ## Best Practises 
 
@@ -967,3 +968,30 @@ Par exemple, la propriété **mode** peut être définie lors de l'appel au scri
 
 Même si c'est possible de le faire, il est toutefois recommandé par webpack de réaliser ce genre de configuration au sein des fichier de configuration afin 
 d'ajouter de la flexibilité au code. 
+
+## Lazy Loading
+
+[**Documentation**](https://webpack.js.org/guides/lazy-loading/)
+
+Le principe du **lazy loading** est simple et consiste essentiellement à diviser son code de manière logique, afin d'appeler certains bouts de code uniquement lorsque l'on
+en a, ou en aura besoin.  
+Cela recoupe l'idée du chapitre autour du [code splitting](#code-splitting).
+Le lazy loading a pour but d'optimiser le temps de chargement de l'application.
+
+Pour l'illustrer nous allons repartir du code du chapitre sur le [code splitting - url github](https://github.com/wJumelle/webpack-gettingStarted/tree/4_codeSplitting).
+
+Nous devons donc recréer le fichier *./src/print.js* et modifier le fichier *./src/index.js*. 
+Lorsque nous lançons la commande `npm run start` et que l'on test de cliquer sur le bouton dans notre page, on peut s'apercevoir que le chargement du fichier *./src/print.js* 
+se produit bien lors du clic et non avant. 
+
+### Frameworks
+
+La plus part des frameworks et des librairies ont leurs propres recommandations sur la façon dont cela devrait être configuré en suivant leur propre méthodologies. 
+1. React: [**Code Splitting and Lazy Loading**](https://reacttraining.com/react-router/web/guides/code-splitting)
+2. Vue: [**Dynamic Imports in Vue.js for better performance**](https://vuedose.tips/tips/dynamic-imports-in-vue-js-for-better-performance/)
+3. Angular  [**Lazy Loading route configuration**](https://angular.io/guide/router#milestone-6-asynchronous-routing) et [**AngularJS + webpack = lazyload**](https://medium.com/@var_bin/angularjs-webpack-lazyload-bb7977f390dd)
+
+### A lire aussi sur ce sujet
+
+1. [**Lazy loading ES2015 Modules in the Browser**](https://dzone.com/articles/lazy-loading-es2015-modules-in-the-browser)
+2. [**Asynchronous vs Deferred Javascript**](https://bitsofco.de/async-vs-defer/)
