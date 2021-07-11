@@ -1039,6 +1039,7 @@ Ajouter à cela, on peut aussi définir certaines extensions de fichiers qui per
 1. [**Shimming globals**](#shimming-globals)
 2. [**Granular shimming**](#granular-shimming)
 3. [**Globals Exports**](#globals-exports)
+4. [**Loading Polyfills**](#loading-polyfills)
 
 Le compilateur webpack est en capacité de comprendre les modules écrits en ES2015, CommonJS ou encore AMD.  
 Cependant, certaines libraires tierces (*third party librairies*) peuvent attendre des dépendances globales (ex: le `$` pour jQuery). Ces librairies 
@@ -1139,3 +1140,24 @@ module: {
 
 Après quoi, à l'intérieur de notre fichier *./src/index.js* nous pourrions très bien déclarer les constantes `const { file, parse } = require('./globals.js');` 
 et cela devrait fonctionner comme il se doit. 
+
+### Loading Polyfills
+
+Au sujet de l'utilisation des polyfills l'avis diverge au sein de la communauté.  
+
+Cependant, la bonne pratique étant d'accepter l'augmentation de la taille total du bundle et de toujours **charger les polyfills avant le chargement de tout code** et ce peu importe l'utilisateur.  
+En effet, les polyfills sont censés être utiles aux utilisateurs qui sont sur d'anciens navigateurs mais dans la réalité des faits les polyfills servent 
+aussi à appliquer de petits patchs sur les navigateurs les plus récents.
+
+Pour importer un polyfill il suffit d'ajouter la ligne `import 'babel-polyfill` (pour le polyfill de babel) dans notre fichier *./src/index.js* et de lancer 
+la commande permettant l'installation du dit polyfill `npm install --save babel-polyfill`.  
+Ici nous ajoutons le flag **--save** et non **--save-dev** tout simplement car notre polyfill sera une dépendance utile en production.  
+Cela étant fait, nous voyons apparaître **babel-polyfill** dans la liste des dépendances du fichier *./package.json*. 
+
+> 💡 Ici nous n'avons pas associer de variable lors de l'appel à la fonction `import`. La raison étant que les polyfills s'éxecutent seuls de manière 
+synchrones avant le chargement de tout le code de notre module. Ce qui permet notamment de simuler l'existence de certaines fonctionnalités 
+natives du navigateur.
+
+Si jamais vous souhaitez tout de même ne pas suivre la bonne pratique et réduire le poids totale de votre builder au dépens de la solidité de votre code, 
+alors vous pouvez aller lire la deuxième partie de la section [**Loading polyfills**](https://webpack.js.org/guides/shimming/#loading-polyfills) 
+autour du package polyfills `whatwg-fetch`. 
