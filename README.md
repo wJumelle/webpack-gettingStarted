@@ -1038,6 +1038,7 @@ Ajouter à cela, on peut aussi définir certaines extensions de fichiers qui per
 
 1. [**Shimming globals**](#shimming-globals)
 2. [**Granular shimming**](#granular-shimming)
+3. [**Globals Exports**](#globals-exports)
 
 Le compilateur webpack est en capacité de comprendre les modules écrits en ES2015, CommonJS ou encore AMD.  
 Cependant, certaines libraires tierces (*third party librairies*) peuvent attendre des dépendances globales (ex: le `$` pour jQuery). Ces librairies 
@@ -1110,3 +1111,31 @@ module: {
     ],
 },
 ```
+
+### Globals Exports
+
+Partons du principe qu'une libraire créé une variable globale et qu'elle s'attend à ce que les consommateurs puissent l'utiliser librement.  
+Nous pouvons ajouter un module *./src/globals.js* à notre configuration afin de démontrer la bonne façon d'agir dans ce cas-là.
+
+> ❗ Nous rappelons qui est fortement déconseillé de produire ce genre d'élément dans vos propres codes sources, seulement il peut arriver que 
+vous avez l'habitude d'utiliser une ancienne librairie qui malheureusement contient ce genre de principe. 
+
+Dans ce cas précis, nous pouvons utiliser `exports-loader` afin d'exporter la variable globale comme on exporter un module standard. 
+
+Par exemple, partons du fichier *./src/globals.js* et disons que nous souhaitons exporter les variables `file as file` et `helpers.parse as parse`, 
+il faudra donc ajouter la configuration suivante : 
+
+```
+module: {
+    rules: [
+        {
+        test: require.resolve('./src/globals.js'),
+        use:
+            'exports-loader?type=commonjs&exports=file,multiple|helpers.parse|parse',
+        },
+    ],
+},
+```
+
+Après quoi, à l'intérieur de notre fichier *./src/index.js* nous pourrions très bien déclarer les constantes `const { file, parse } = require('./globals.js');` 
+et cela devrait fonctionner comme il se doit. 
