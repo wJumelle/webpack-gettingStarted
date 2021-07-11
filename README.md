@@ -18,6 +18,7 @@ Sommaire :
 12. [Tree Shaking](#tree-shaking)
 13. [Production](#production)
 14. [Lazy Loading](#lazy-loading)
+15. [ECMAScript Modules](#ecmascript-modules)
 
 ## Best Practises 
 
@@ -995,3 +996,37 @@ La plus part des frameworks et des librairies ont leurs propres recommandations 
 
 1. [**Lazy loading ES2015 Modules in the Browser**](https://dzone.com/articles/lazy-loading-es2015-modules-in-the-browser)
 2. [**Asynchronous vs Deferred Javascript**](https://bitsofco.de/async-vs-defer/)
+
+## ECMAScript Modules
+
+[**Specification**](https://tc39.es/ecma262/#sec-modules)
+
+L'**ECMAScript Modumes** (ESM) est une spécification pour l'usage des modules sur le Web.  
+Cette spécification est supporté par tous les navigateurs récents et est la façon recommandée d'écrire du code modulaire pour le Web.
+
+De son côté webpack prend totalement en charge l'ECMAScript Modules et tend à optimiser ces modules.
+
+### L'export
+
+Le mot-clé `export` permet de rendre accessible des éléments d'un ESM à un autre.  
+[**Documentation MDN export**](https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Statements/export)
+
+### L'import
+
+Le mot-clé `import` permet quant à lui d'obtenir une référence à un élément provenant d'un autre ESM.
+[**Documentation MDN import**](https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Statements/import)
+
+### Marquer des modules en tant qu'ESM
+
+Le marquage (*flagging*) des modules se fait de manière automatique chez webpack.  
+Celui-ci détecte en effet si un fichier est un ESM ou autre chose.  
+
+Node.js a établi une manière explicite de marquer le type de module en ajoutant tout simplement une propriété dans le fichier *./package.json*.
+Y définir la propriété `"type": "module` aura pour effet de déclarer le module comme étant un module ESM alors que la paire `"type":"commonjs"` déclarera 
+un module CommonJS.
+
+Ajouter à cela, on peut aussi définir certaines extensions de fichiers qui permettront aussi de déclarer le type de module `.mjs` ou `.cjs` (ESM/CommonJS Modules) ou encore ajouter les mime type `text/javascript` ou `application/javascript` pour forcer la déclaration d'un module en tant qu'ESM. 
+
+### Pour approfondir 
+
+1. [**Modules ESM dans Node.js**](https://nodejs.org/api/esm.html)
