@@ -1177,3 +1177,16 @@ les imports globaux du package **babel-polyfill de manière plus fine** en réal
 1. [**Node Built-Ins**](https://www.youtube.com/watch?v=oXI3ysg3s3s&list=PLtbrIhAJmrPALgw6Ko7H78WxHC3pzxeZl&index=43&ab_channel=HarryMack)
 2. [**Other Utilities**](https://webpack.js.org/guides/shimming/#other-utilities)
 3. [**useBuiltIns in babel-preset-env**](https://babeljs.io/docs/en/babel-preset-env#usebuiltins)
+
+## ToDo
+
+0. Démarrer le projet webpack en nettoyant le dossier et le README.md
+1. Installation et configuration de webpack webpack-cli webpack-dev-server
+2. Création de fichiers de configurations multi-env
+3. Installation du DashBoard (webpack-dashboard)
+3. Installation des loaders pour les différents assets (css, scss, fonts, images, files)
+4. Exports du SCSS en CSS dans un fichier distant
+5. Mise en place de Babel pour l'optimisation du JS
+6. Minify CSS & JS
+7. Tree Shaking and Shimming
+8. Installation du package filemanager-webpack-plugin pour la gestion du dossier ./dist
