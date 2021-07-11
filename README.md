@@ -1034,6 +1034,10 @@ Ajouter à cela, on peut aussi définir certaines extensions de fichiers qui per
 
 ## Shimming (*calibrage/calage*)
 
+[**Documentation**](https://webpack.js.org/guides/shimming/)
+
+1. [**Shimming globals**](#shimming-globals)
+
 Le compilateur webpack est en capacité de comprendre les modules écrits en ES2015, CommonJS ou encore AMD.  
 Cependant, certaines libraires tierces (*third party librairies*) peuvent attendre des dépendances globales (ex: le `$` pour jQuery). Ces librairies 
 peuvent aussi très bien créer des variables globales qui auront la nécessité d'être exportées. 
@@ -1047,3 +1051,42 @@ Il arrive que certaines fonctionnalités ne soient pas disponible pour certaines
 recours à des polyfill qui permettront d'accéder à ces fonctionnalités.  
 Dans un processus d'optimisation, ce que l'on souhaite serait donc de charger de manière totalement dynamique ces polyfills lorsque cela est nécessaire, 
 et non pour chaque utilisateur.
+
+### Shimming globals
+
+Auparavant, à l'intérieur de notre fichier *./src/index.js* nous réalisions un `import _ from 'lodash';` afin de définir la dépendance à lodash et donc 
+d'avoir accès à ces fonctions.  
+Le **shimming** permet de simplifier ce genre de code tout simplement en déclarant la dépendance directement dans le fichier *./webpack.config.js*.  
+Ici, nous avons nos 3 fichiers de config distincts, cependant nous souhaitons que cette dépendance soit déclarée pour nos deux environnements, 
+nous allons donc la déclarer dans le fichier *./webpack.common.js*. 
+
+```
+const webpack = require('webpack');
+
+module.exports.plugins: [
+    new webpack.ProvidePlugin({
+        _: 'lodash',
+    }),
+]
+```
+
+Ce que nous avons fait ici c'est de dire à webpack, que si il rencontre au moins un instance de `_` alors cela voudra dire qu'il doit charger le package 
+lodash et le fournir au module qui en a besoin. 
+
+Nous aurions pu imaginer une configuration encore plus ciblée, en ne précisant à webpack d'aller charger uniquement la fonction `join` de lodash.  
+Pour cela nous devons : 
+• modifier le JS, `element.innerHTML = _.join(['Hello', 'webpack'], ' ');` devient ainsi `element.innerHTML = join(['Hello', 'webpack'], ' ');`
+• la configuration précédente de la façon suivante : 
+
+```
+const webpack = require('webpack');
+
+module.exports.plugins: [
+    new webpack.ProvidePlugin({
+        "join": ['lodash', 'join'],
+    }),
+]
+```
+
+Cela va de paire avec l'idée développé dans le chapitre sur le [**tree shaking**](#tree-shaking) puisque cela nous permet d'éviter d'ajouter du code qui 
+au final ne nous sera pas utile. 
