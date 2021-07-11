@@ -1171,3 +1171,9 @@ Le package `babel-preset-env` utilise [**browserslist**](https://github.com/brow
 supporter par votre matrice de navigateurs.  
 Ce preset arrive avec l'option [`useBuiltIns`](https://babeljs.io/docs/en/babel-preset-env#usebuiltins), initialisé à `false`qui permet de convertir 
 les imports globaux du package **babel-polyfill de manière plus fine** en réalisant un import de type **feature by feature**.
+
+### Others stuff
+
+1. [**Node Built-Ins**](https://www.youtube.com/watch?v=oXI3ysg3s3s&list=PLtbrIhAJmrPALgw6Ko7H78WxHC3pzxeZl&index=43&ab_channel=HarryMack)
+2. [**Other Utilities**](https://webpack.js.org/guides/shimming/#other-utilities)
+3. [**useBuiltIns in babel-preset-env**](https://babeljs.io/docs/en/babel-preset-env#usebuiltins)
