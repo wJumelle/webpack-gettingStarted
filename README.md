@@ -1040,6 +1040,7 @@ Ajouter à cela, on peut aussi définir certaines extensions de fichiers qui per
 2. [**Granular shimming**](#granular-shimming)
 3. [**Globals Exports**](#globals-exports)
 4. [**Loading Polyfills**](#loading-polyfills)
+5. [**Futhermore Optimizations**](#futhermore-optimizations)
 
 Le compilateur webpack est en capacité de comprendre les modules écrits en ES2015, CommonJS ou encore AMD.  
 Cependant, certaines libraires tierces (*third party librairies*) peuvent attendre des dépendances globales (ex: le `$` pour jQuery). Ces librairies 
@@ -1160,4 +1161,13 @@ natives du navigateur.
 
 Si jamais vous souhaitez tout de même ne pas suivre la bonne pratique et réduire le poids totale de votre builder au dépens de la solidité de votre code, 
 alors vous pouvez aller lire la deuxième partie de la section [**Loading polyfills**](https://webpack.js.org/guides/shimming/#loading-polyfills) 
-autour du package polyfills `whatwg-fetch`. 
+autour du package polyfills `whatwg-fetch`.
+
+### Further Optimizations
+
+[**Documentation du package**](https://babeljs.io/docs/en/babel-preset-env)
+
+Le package `babel-preset-env` utilise [**browserslist**](https://github.com/browserslist/browserslist) afin de transpiler uniquement ce qui n'est pas 
+supporter par votre matrice de navigateurs.  
+Ce preset arrive avec l'option [`useBuiltIns`](https://babeljs.io/docs/en/babel-preset-env#usebuiltins), initialisé à `false`qui permet de convertir 
+les imports globaux du package **babel-polyfill de manière plus fine** en réalisant un import de type **feature by feature**.
