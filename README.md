@@ -19,6 +19,7 @@ Sommaire :
 13. [Production](#production)
 14. [Lazy Loading](#lazy-loading)
 15. [ECMAScript Modules](#ecmascript-modules)
+16. [Shimming](#shimming)
 
 ## Best Practises 
 
@@ -1030,3 +1031,19 @@ Ajouter à cela, on peut aussi définir certaines extensions de fichiers qui per
 ### Pour approfondir 
 
 1. [**Modules ESM dans Node.js**](https://nodejs.org/api/esm.html)
+
+## Shimming (*calibrage/calage*)
+
+Le compilateur webpack est en capacité de comprendre les modules écrits en ES2015, CommonJS ou encore AMD.  
+Cependant, certaines libraires tierces (*third party librairies*) peuvent attendre des dépendances globales (ex: le `$` pour jQuery). Ces librairies 
+peuvent aussi très bien créer des variables globales qui auront la nécessité d'être exportées. 
+Ces modules "cassés" sont un exemple de l'importance du shimming.
+
+> ❗ Il n'est pas recommandé d'utiliser des variables globales lorsqu'on utilise webpack. Son concept étant en effet de produire des environnements 
+de dévelopemment front-end modulaire. Ce qui revient à dire créer des modules isolés totalement indépendant. 
+
+Un autre exemple de l'importance du shimming étant l'usage des **polyfill** !  
+Il arrive que certaines fonctionnalités ne soient pas disponible pour certaines navigateurs / version de navigateur, il est alors possible d'avoir
+recours à des polyfill qui permettront d'accéder à ces fonctionnalités.  
+Dans un processus d'optimisation, ce que l'on souhaite serait donc de charger de manière totalement dynamique ces polyfills lorsque cela est nécessaire, 
+et non pour chaque utilisateur.
