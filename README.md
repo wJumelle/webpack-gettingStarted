@@ -1037,6 +1037,7 @@ Ajouter à cela, on peut aussi définir certaines extensions de fichiers qui per
 [**Documentation**](https://webpack.js.org/guides/shimming/)
 
 1. [**Shimming globals**](#shimming-globals)
+2. [**Granular shimming**](#granular-shimming)
 
 Le compilateur webpack est en capacité de comprendre les modules écrits en ES2015, CommonJS ou encore AMD.  
 Cependant, certaines libraires tierces (*third party librairies*) peuvent attendre des dépendances globales (ex: le `$` pour jQuery). Ces librairies 
@@ -1090,3 +1091,22 @@ module.exports.plugins: [
 
 Cela va de paire avec l'idée développé dans le chapitre sur le [**tree shaking**](#tree-shaking) puisque cela nous permet d'éviter d'ajouter du code qui 
 au final ne nous sera pas utile. 
+
+### Granular shimming
+
+Certains modules s'appuient sur le fait que `this` correspond à l'objet `window` du navigateur alors que dans les modules CommonJS, `this` aura tendance à 
+désigner `module.exports`.  
+Dans ce cas précis, il est possible de contourner cette problématique en utilisant `imports-loader`.
+
+Pour cela nous devons modifier le fichier *./webpack.common.js* afin d'y ajouter la règle suivante : 
+
+```
+module: {
+    rules: [
+    {
+        test: require.resolve('./src/index.js'),
+        use: 'imports-loader?wrapper=window',
+        },
+    ],
+},
+```

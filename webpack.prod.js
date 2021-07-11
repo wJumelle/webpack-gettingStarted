@@ -1,5 +1,4 @@
 const { merge } = require('webpack-merge');
-const webpack = require('webpack');
 const common = require('./webpack.common.js');
 
 module.exports = merge(common, {
@@ -15,10 +14,5 @@ module.exports = merge(common, {
     usedExports: true,
     //runtimeChunk permet de dire à webpack de créer un fichier runtime.js partagé par l'ensemble des fragments de code (chunks) générés
     runtimeChunk: 'single'
-  },
-  plugins: [
-    new webpack.ProvidePlugin({
-      _: 'lodash',
-    }),
-  ]
+  }
 });

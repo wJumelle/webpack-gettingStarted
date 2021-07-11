@@ -3,6 +3,9 @@ function component() {
 
     element.innerHTML = _.join(['Hello', 'webpack', 'ici', 'Wilfried', 'Jumelle'], ' ');
 
+    // Assume we are in the context of `window`
+    this.alert("Hmmm, this probably isn't a great idea...");
+
     return element;
 }
 

@@ -10,15 +10,21 @@ module.exports = {
     new HtmlWebpackPlugin({
       title: 'Shimming',
     }),
+    new webpack.ProvidePlugin({
+      _: 'lodash',
+    }),
   ],
   output: {
     filename: '[name].[hash].js',
     path: path.resolve(__dirname, 'dist'),
     clean: true
   },
-  plugins: [
-    new webpack.ProvidePlugin({
-      _: 'lodash',
-    }),
-  ]
+  module: {
+    rules: [
+      {
+        test: require.resolve('./src/index.js'),
+        use: 'imports-loader?wrapper=window',
+      },
+    ],
+  },
 };
